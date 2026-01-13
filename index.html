@@ -9,261 +9,234 @@
 
 <style>
 :root{
- --red:#c0392b;
- --gold:#ffd700;
- --paper:#fff5e6;
+  --red:#c0392b;
+  --gold:#ffd700;
+  --paper:#fff5e6;
 }
+
 body{
- margin:0;
- min-height:100vh;
- display:flex;
- align-items:center;
- justify-content:center;
- background:radial-gradient(circle,#fff8ef,#e6c9a8);
- font-family:system-ui;
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle,#2c0a0a,#000);
+  font-family:"Times New Roman",serif;
 }
+
 .panel{
- width:92vw;
- max-width:420px;
- background:var(--paper);
- border-radius:18px;
- padding:18px;
- border:8px double #4e342e;
- box-shadow:0 15px 40px rgba(0,0,0,.4);
- position:relative;
-}
-h1{text-align:center;color:var(--red);margin:6px}
-.sub{text-align:center;font-size:.9rem;color:#6b4a39}
-
-.tube{
- width:120px;height:170px;
- background:linear-gradient(#5d4037,#2e1b14);
- border-radius:16px;
- margin:20px auto;
-}
-.shaking{
- animation:shake .15s infinite;
-}
-@keyframes shake{
- 0%{transform:rotate(0deg)}
- 25%{transform:rotate(2deg)}
- 50%{transform:rotate(0deg)}
- 75%{transform:rotate(-2deg)}
- 100%{transform:rotate(0deg)}
-}
-
-.cards{
- position:relative;
- height:160px;
- margin-top:10px;
-}
-.card{
- width:70px;height:110px;
- background:#fff;
- border-radius:8px;
- position:absolute;
- left:50%;
- top:30px;
- transform-origin:bottom center;
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:700;
- color:var(--red);
- box-shadow:0 8px 18px rgba(0,0,0,.35);
- cursor:pointer;
- transition:.4s;
-}
-.card:hover{transform:scale(1.05) translateX(-50%)}
-
-.big-card{
- background:#fffdf6;
- border-radius:16px;
- padding:16px;
- margin-top:12px;
- box-shadow:0 10px 30px rgba(0,0,0,.35);
- animation:pop .5s;
-}
-@keyframes pop{
- from{transform:scale(.7);opacity:0}
- to{transform:scale(1);opacity:1}
-}
-.start-text{
- margin-top:10px;
- text-align:center;
- font-weight:900;
- color:var(--red);
- letter-spacing:1px;
-}
-
-.notice{
- margin-top:10px;
- background:linear-gradient(90deg,#fff3c4,#ffe08a);
- padding:10px;
- border-radius:12px;
- text-align:center;
- font-weight:800;
+  width:92%;
+  max-width:420px;
+  background:var(--paper);
+  border:10px double #7b4a12;
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 0 25px rgba(255,215,0,.4);
 }
 
 button{
- padding:10px 14px;
- border:none;
- border-radius:12px;
- font-weight:800;
- cursor:pointer;
+  background:linear-gradient(145deg,var(--gold),#e6b800);
+  border:none;
+  padding:12px 22px;
+  border-radius:12px;
+  font-size:16px;
+  cursor:pointer;
 }
-.primary{background:var(--red);color:#fff}
 
-.modal{
- position:fixed;inset:0;
- background:rgba(0,0,0,.65);
- display:flex;
- align-items:center;
- justify-content:center;
- z-index:10;
+.hidden{display:none}
+
+/* XÓC */
+@keyframes shake{
+  0%{transform:translate(0) rotate(0)}
+  25%{transform:translate(2px,-2px) rotate(-2deg)}
+  50%{transform:translate(-2px,2px) rotate(2deg)}
+  75%{transform:translate(2px,2px) rotate(-1deg)}
+  100%{transform:translate(0) rotate(0)}
 }
-.modal-box{
- background:var(--paper);
- padding:20px;
- border-radius:16px;
- text-align:center;
- width:90%;
- max-width:360px;
+.shake{animation:shake .15s infinite}
+
+/* CARD GRID */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:20px;
+  perspective:1000px;
+}
+
+/* 3D CARD */
+.card{
+  height:90px;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:.6s;
+  cursor:pointer;
+}
+
+.card-inner{
+  position:absolute;
+  inset:0;
+  border-radius:12px;
+  border:3px solid var(--gold);
+  background:linear-gradient(#fff,#f3e6c8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  backface-visibility:hidden;
+}
+
+.card-back{
+  transform:rotateY(180deg);
+  font-size:14px;
+}
+
+.card.flip{transform:rotateY(180deg) scale(1.15); z-index:10}
+
+/* RESULT */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.result{
+  background:var(--paper);
+  border:8px double var(--gold);
+  border-radius:20px;
+  padding:25px;
+  width:90%;
+  max-width:380px;
+  animation:zoom .4s ease;
+}
+
+@keyframes zoom{
+  from{transform:scale(.3)}
+  to{transform:scale(1)}
+}
+
+.reward{
+  margin-top:15px;
+  font-weight:bold;
+  color:var(--red);
 }
 
 .dev{
- position:fixed;
- left:8px;
- bottom:6px;
- font-size:11px;
- color:#5c4033;
- opacity:.7;
+  position:fixed;
+  bottom:6px;
+  left:8px;
+  font-size:11px;
+  color:#fff;
+  opacity:.6;
 }
 </style>
 </head>
+
 <body>
 
-<div class="panel">
-<h1>🔮 XIN QUẺ 2026</h1>
-<div class="sub">Hội trại lớp 10/5</div>
-
-<div id="tube" class="tube"></div>
-
-<div class="cards" id="cards"></div>
-
-<div id="result"></div>
+<div class="panel" id="step1">
+  <h2>🔮 Bạn đã sẵn sàng?</h2>
+  <button onclick="next(2)">Sẵn sàng</button>
 </div>
 
-<div class="modal" id="m1">
- <div class="modal-box">
-  <h3>Bạn đã sẵn sàng chưa?</h3>
-  <button class="primary" onclick="step2()">ĐỒNG Ý</button>
- </div>
+<div class="panel hidden" id="step2">
+  <h2>🌌 Tương lai 2026 đang chờ bạn</h2>
+  <button onclick="next(3)">Bắt đầu</button>
 </div>
 
-<div class="modal" id="m2" style="display:none">
- <div class="modal-box">
-  <h3>Tương lai 2026 của bạn sẽ ra sao?</h3>
-  <button class="primary" onclick="start()">BẮT ĐẦU</button>
- </div>
+<div class="panel hidden" id="step3">
+  <h2>🪵 Xóc quẻ</h2>
+  <button id="shakeBtn">Xóc</button>
+  <div class="cards hidden" id="cards"></div>
 </div>
 
 <div class="dev">dev by Hai Duong</div>
 
+<audio id="shakeSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wood-hard-hit-2182.mp3" loop></audio>
+<audio id="good" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
+<audio id="bad" src="https://assets.mixkit.co/sfx/preview/mixkit-sad-game-over-trombone-471.mp3"></audio>
+
 <script>
-const STORE="QUE105_FINAL";
-let ctx;
-
-const good=[],bad=[];
-for(let i=0;i<50;i++){
- good.push("Vận may đang mỉm cười, ghé quầy 10/5 mua nước để giữ lộc nhé!");
- bad.push("Cẩn thận thị phi, bình tĩnh rồi mọi chuyện sẽ qua.");
+const fortunes=[];
+for(let i=1;i<=50;i++){
+  fortunes.push({text:`Quẻ MAY ${i}: Mua nước quầy 10/5 để kích vận 🍀`,good:true});
 }
-const team=[
- "Bỏ qua sân si, 10/5 sẽ vô địch bóng chuyền",
- "Đoàn kết chính là sức mạnh lớn nhất của 10/5",
- "Cố gắng âm thầm, chiến thắng sẽ tự đến với 10/5"
-];
-
-function audio(){
- if(!ctx) ctx=new (AudioContext||webkitAudioContext)();
+for(let i=1;i<=50;i++){
+  fortunes.push({text:`Quẻ XUI ${i}: Đoàn kết 10/5 rồi sẽ vô địch bóng chuyền 💪`,good:false});
 }
 
-function sfx(freq=.1,d=150){
- audio();
- let o=ctx.createOscillator(),g=ctx.createGain();
- o.frequency.value=freq;
- o.connect(g);g.connect(ctx.destination);
- g.gain.value=.25;
- o.start();
- o.stop(ctx.currentTime+d/1000);
+let rewardType="";
+const now=Date.now();
+const lastPunish=localStorage.getItem("lastPunish")||0;
+
+const r=Math.random()*100;
+if(r<1){
+  rewardType="DANCER 15 PHÚT 😏";
+}else if(r<11 && now-lastPunish>900000){
+  rewardType="BÁN PHỤ 15 PHÚT 🧹";
+  localStorage.setItem("lastPunish",now);
+}else if(r<36){
+  rewardType="🎁 MÓC KHOÁ – RA QUẦY 10/5 NHẬN";
+}else{
+  rewardType="KHÔNG QUÀ";
 }
 
-function step2(){
- sfx(800);
- m1.style.display="none";
- m2.style.display="flex";
+function next(n){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.add("hidden"));
+  document.getElementById("step"+n).classList.remove("hidden");
 }
 
-function start(){
- audio();ctx.resume();
- sfx(600);
- m2.style.display="none";
- if(localStorage.getItem(STORE)){
-  showResult(JSON.parse(localStorage.getItem(STORE)));
-  return;
- }
- shake();
-}
-
-function shake(){
- tube.classList.add("shaking");
- if(navigator.vibrate) navigator.vibrate([200,100,200,100,200]);
- setTimeout(()=>{
-  tube.classList.remove("shaking");
-  showCards();
- },1500);
-}
+shakeBtn.onclick=()=>{
+  if(localStorage.getItem("fortune")) return show(JSON.parse(localStorage.getItem("fortune")));
+  shakeBtn.classList.add("shake");
+  shakeSound.play();
+  navigator.vibrate&&navigator.vibrate([200,100,200]);
+  setTimeout(()=>{
+    shakeBtn.classList.remove("shake");
+    shakeSound.pause();
+    showCards();
+  },2000);
+};
 
 function showCards(){
- cards.innerHTML="";
- for(let i=0;i<6;i++){
-  let c=document.createElement("div");
-  c.className="card";
-  c.style.transform=`translateX(-50%) rotate(${(i-2.5)*15}deg)`;
-  c.innerText="QUẺ";
-  c.onclick=()=>pick();
-  cards.appendChild(c);
- }
+  cards.innerHTML="";
+  cards.classList.remove("hidden");
+  for(let i=0;i<6;i++){
+    const c=document.createElement("div");
+    c.className="card";
+    c.innerHTML=`<div class="card-inner">QUẺ</div>
+                 <div class="card-inner card-back">MỞ</div>`;
+    c.onclick=()=>pick(c);
+    cards.appendChild(c);
+  }
 }
 
-function pick(){
- cards.innerHTML="";
- let isGood=Math.random()<0.5;
- let text=isGood?
-  good[Math.floor(Math.random()*good.length)]:
-  bad[Math.floor(Math.random()*bad.length)];
-
- if(Math.random()<0.2)
-  text+=" 🏆 "+team[Math.floor(Math.random()*team.length)];
-
- let gift=Math.random()<0.1;
- let data={text,gift,isGood};
- localStorage.setItem(STORE,JSON.stringify(data));
- showResult(data);
+function pick(card){
+  const f=fortunes[Math.floor(Math.random()*fortunes.length)];
+  localStorage.setItem("fortune",JSON.stringify(f));
+  card.classList.add("flip");
+  setTimeout(()=>show(f),600);
 }
 
-function showResult(d){
- let html=`<div class="big-card">
-  <div>${d.text}</div>
-  <div class="start-text">✨ BẮT ĐẦU ĐI ✨</div>
- </div>`;
- if(d.gift){
-  html+=`<div class="notice">🎁 Mang màn hình đến quầy 10/5 để nhận MÓC KHÓA!</div>`;
-  confetti({particleCount:120,spread:80});
- }
- result.innerHTML=html;
+function show(f){
+  f.good?good.play():bad.play();
+  if(f.good) confetti({particleCount:120,spread:70});
+  const o=document.createElement("div");
+  o.className="overlay";
+  o.innerHTML=`
+  <div class="result">
+    <h2>${f.good?"🌟 QUẺ MAY":"⚠️ QUẺ XUI"}</h2>
+    <p>${f.text}</p>
+    <div class="reward">${rewardType}</div>
+  </div>`;
+  document.body.appendChild(o);
 }
 </script>
+
 </body>
 </html>
