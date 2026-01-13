@@ -8,47 +8,37 @@
     <style>
         :root { --red: #c0392b; --paper: #fff5e6; --wood: #5d4037; }
         body { margin: 0; background: #000; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; color: #333; }
-        
         .panel { background: var(--paper); padding: 30px; border-radius: 25px; border: 8px double var(--wood); box-shadow: 0 0 50px rgba(0,0,0,0.8); text-align: center; width: 85%; max-width: 350px; display: none; flex-direction: column; align-items: center; }
         .active { display: flex !important; }
-
         h1 { color: var(--red); font-size: 22px; text-transform: uppercase; font-weight: 900; margin-top: 0; }
-        p { font-weight: bold; line-height: 1.4; }
-        
         .btn-action { background: linear-gradient(#e74c3c, #c0392b); color: white; border: none; padding: 18px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; box-shadow: 0 5px 0 #7b241c; text-transform: uppercase; margin-top: 15px; }
-        .btn-action:active { transform: translateY(4px); box-shadow: 0 1px 0 #7b241c; }
-        
         input[type="date"] { width: 90%; padding: 15px; border-radius: 12px; border: 3px solid var(--wood); font-size: 18px; font-weight: bold; margin: 10px 0; text-align: center; }
-
         #ong-que { font-size: 100px; margin: 20px 0; display: none; }
-        .shaking { animation: shake 0.1s infinite; display: block !important; }
-        @keyframes shake { 0% { transform: rotate(5deg); } 50% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
-
+        .shaking { animation: shake 0.12s infinite; display: block !important; }
+        @keyframes shake { 0% { transform: rotate(7deg); } 50% { transform: rotate(-7deg); } 100% { transform: rotate(7deg); } }
         .que-fan { display: none; position: relative; height: 220px; width: 100%; margin-top: 20px; }
         .que-stick { width: 40px; height: 160px; background: linear-gradient(#f3d5b5, #e7bc91); border-radius: 8px; border: 1px solid #bc8a5f; position: absolute; left: 50%; bottom: 0; margin-left: -20px; transform-origin: bottom center; transition: 0.3s; cursor: pointer; writing-mode: vertical-rl; font-size: 12px; font-weight: bold; color: var(--wood); display: flex; align-items: center; justify-content: center; }
-
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; justify-content: center; align-items: center; padding: 20px; }
-        .gift { background: #fff3e0; border: 3px dashed var(--red); color: var(--red); padding: 10px; border-radius: 10px; margin: 15px 0; font-weight: 900; }
     </style>
 </head>
 <body>
 
     <div id="step1" class="panel active">
         <h1>THIÊN CƠ 10/5</h1>
-        <p>Bạn có tin vào những điềm báo của định mệnh không?</p>
-        <button class="btn-action" onclick="toStep2()">TÔI TIN!</button>
+        <p>Bạn có tin vào định mệnh?</p>
+        <button class="btn-action" onclick="handleConfirm(1)">TÔI TIN!</button>
     </div>
 
     <div id="step2" class="panel">
         <h1>CẨN TRỌNG</h1>
-        <p>Mỗi người chỉ có một lần rút thẻ. Bạn đã sẵn sàng đối mặt?</p>
-        <button class="btn-action" onclick="toMain()">SẴN SÀNG!</button>
+        <p>Mỗi người chỉ có một lần rút. Sẵn sàng chưa?</p>
+        <button class="btn-action" onclick="handleConfirm(2)">SẴN SÀNG!</button>
     </div>
 
     <div id="main" class="panel">
         <h1>NHẬP NGÀY SINH</h1>
         <input type="date" id="dob">
-        <button class="btn-action" onclick="startShake()">LẮC ỐNG XIN QUẺ</button>
+        <button class="btn-action" id="shake-btn" onclick="startShake()">LẮC ỐNG XIN QUẺ</button>
         <div id="ong-que">🏺</div>
         <div id="que-fan" class="que-fan"></div>
     </div>
@@ -57,56 +47,57 @@
         <div class="panel active" style="width: 100%; max-width: 320px;">
             <div id="res-icon" style="font-size: 60px;">🏆</div>
             <div id="res-title" style="font-size: 22px; font-weight: 900; color: var(--red);"></div>
-            <p id="res-desc" style="font-size: 16px; margin: 15px 0;"></p>
-            <div id="gift-box" class="gift" style="display:none;">🎁 QUÀ TẶNG: 01 MÓC KHÓA!</div>
-            <p style="font-size: 11px; color: #999; border-top: 1px solid #ddd; padding-top: 10px;">ĐỊNH MỆNH ĐÃ KHÓA - KHÔNG THỂ RÚT LẠI</p>
+            <p id="res-desc" style="font-size: 16px; margin: 15px 0; font-weight: bold;"></p>
+            <div id="gift-box" style="display:none; background: #fff3e0; border: 2px dashed red; padding: 10px; border-radius: 10px; color: red; font-weight: 900;">🎁 QUÀ: 01 MÓC KHÓA!</div>
+            <p style="font-size: 11px; color: #999; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">ĐỊNH MỆNH ĐÃ KHÓA</p>
         </div>
     </div>
 
 <script>
+    // Hệ thống âm thanh được gán link trực tiếp
     const sfx = {
+        click: new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3'),
         shake: new Audio('https://actions.google.com/sounds/v1/tools_and_equipment/wood_rattle.ogg'),
         draw: new Audio('https://actions.google.com/sounds/v1/foley/paper_shuffle.ogg'),
         win: new Audio('https://actions.google.com/sounds/v1/cartoon/clown_horn_accent.ogg'),
         sad: new Audio('https://www.myinstants.com/media/sounds/sad-violin-meme.mp3')
     };
 
-    function prepAudio() {
-        for (let key in sfx) {
-            sfx[key].play().then(() => { sfx[key].pause(); sfx[key].currentTime = 0; });
+    function handleConfirm(step) {
+        // Phát tiếng "TÁCH"
+        sfx.click.play();
+        // Mồi các âm thanh khác
+        for (let k in sfx) { sfx[k].play().then(()=> {sfx[k].pause(); sfx[k].currentTime=0;}); }
+
+        if(step === 1) {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+        } else {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('main').classList.add('active');
         }
     }
 
-    function toStep2() {
-        prepAudio();
-        document.getElementById('step1').classList.remove('active');
-        document.getElementById('step2').classList.add('active');
-    }
-
-    function toMain() {
-        prepAudio();
-        document.getElementById('step2').classList.remove('active');
-        document.getElementById('main').classList.add('active');
-    }
-
     function startShake() {
-        const dob = document.getElementById('dob').value;
-        if(!dob) return alert("Hãy nhập ngày sinh!");
+        if(!document.getElementById('dob').value) return alert("Nhập ngày sinh ní ơi!");
         
-        document.querySelector('#main h1').style.display = 'none';
+        sfx.click.play(); // Tiếng bấm nút
         document.getElementById('dob').style.display = 'none';
-        document.querySelector('#main .btn-action').style.display = 'none';
+        document.getElementById('shake-btn').style.display = 'none';
         
         const ong = document.getElementById('ong-que');
         ong.classList.add('shaking');
-        sfx.shake.loop = true; sfx.shake.play();
+        
+        // Phát tiếng "SỘT SOẠT"
+        sfx.shake.loop = true;
+        sfx.shake.play();
 
         setTimeout(() => {
             sfx.shake.pause();
             ong.classList.remove('shaking');
             ong.style.display = 'none';
             showQue();
-        }, 2000);
+        }, 2200);
     }
 
     function showQue() {
@@ -117,8 +108,10 @@
             q.className = 'que-stick'; q.innerHTML = "QUẺ 10/5";
             q.style.transform = `rotate(${(i-2.5)*18}deg) translateX(${(i-2.5)*10}px)`;
             q.onclick = function() {
+                // Phát tiếng "XOỆT"
                 sfx.draw.play();
                 this.style.transform = "translateY(-80px) scale(1.1)";
+                this.style.zIndex = "100";
                 setTimeout(finish, 800);
             };
             fan.appendChild(q);
@@ -126,24 +119,23 @@
     }
 
     const data = [
-        {t:"Đại Cát", d:"Năm 2026 vạn sự như ý, tiền vào như nước!", type:"good", gift:false},
-        {t:"Lộc Ăn", d:"Bạn có lộc ăn uống rất lớn. Mua nước 10/5 để khai vị ngay!", type:"good", gift:true},
-        {t:"Hạn Thị Phi", d:"Dễ bị nói xấu. Uống nước 10/5 để giải xui, thanh lọc tâm hồn!", type:"bad", gift:false},
-        {t:"Hao Tài", d:"Ví tiền hơi lép. Đầu tư 1 ly nước 10/5 để kích cầu tài lộc!", type:"bad", gift:false},
-        {t:"May Mắn", d:"Quý nhân phù trợ, làm gì cũng thắng, học hành tinh tấn!", type:"good", gift:true}
+        {t:"Đại Cát", d:"2026 vạn sự như ý, tiền vào như nước!", type:"good", gift:false},
+        {t:"Lộc Ăn", d:"Sắp tới có lộc ăn uống rất lớn. Mua nước 10/5 để khai vị ngay!", type:"good", gift:true},
+        {t:"Hạn Thị Phi", d:"Dễ bị nói xấu. Uống nước 10/5 để giải nghiệp, thanh lọc tâm hồn!", type:"bad", gift:false},
+        {t:"May Mắn", d:"Quý nhân phù trợ, làm gì cũng thắng, học hành tinh tấn!", type:"good", gift:true},
+        {t:"Hạn Suy Nghĩ", d:"Đầu óc hay bị overthinking. Làm ly nước 10/5 cho tỉnh táo nào!", type:"bad", gift:false}
     ];
-    while(data.length < 70) data.push({t:"Bình Hòa", d:"Mọi sự ổn định. Hãy ủng hộ lớp 10/5 để gặp thêm may mắn!", type:"good", gift:false});
 
     function finish() {
         const dob = document.getElementById('dob').value;
         let res;
         if(dob === "2010-06-25") {
-            res = {t:"💎 THIẾU GIA VIP 10/5", d:"Hào quang rực rỡ nhất khối, giàu sang phú quý!", type:"good", gift:true};
+            res = {t:"💎 THIẾU GIA VIP 10/5", d:"Hào quang rực rỡ, giàu sang phú quý!", type:"good", gift:true};
         } else {
             const d = new Date(dob);
             res = data[(d.getDate() + d.getMonth()) % data.length];
         }
-        localStorage.setItem('105_final_v10', JSON.stringify(res));
+        localStorage.setItem('105_final_locked', JSON.stringify(res));
         render(res);
     }
 
@@ -154,21 +146,22 @@
         document.getElementById('modal-res').style.display = 'flex';
         
         if(res.type === "good") {
-            sfx.win.play();
+            sfx.win.play(); // Nhạc VUI
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
-            sfx.sad.play();
+            sfx.sad.play(); // Nhạc BUỒN
             document.getElementById('res-icon').innerText = "⚠️";
         }
     }
 
     window.onload = () => {
-        const saved = localStorage.getItem('105_final_v10');
+        const saved = localStorage.getItem('105_final_locked');
         if(saved) render(JSON.parse(saved));
     };
 </script>
 </body>
 </html>
+
 
 
 
