@@ -1,494 +1,276 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>🔮 Quẻ Định Mệnh 10/5 — Supreme Camp (Hoàn chỉnh)</title>
-
-<!-- Canvas confetti (CDN) -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quẻ Định Mệnh 10/5</title>
 
 <style>
-/* ========== THEME & TEXTURE ========== */
 :root{
-  --red:#c0392b;
-  --gold:#ffd700;
-  --paper:#fff5e6;
-  --wood1:#6d4c41;
-  --wood2:#4b2e2e;
-  --muted:#6b4a39;
-  --card-w:78px; --card-h:114px;
-  --disk-fill:linear-gradient(135deg,#2e2b2b,#1a1a1a);
+  --do:#c0392b;
+  --vang:#ffd700;
+  --giay:#fff5e6;
+  --tim:#6c5ce7;
 }
 
-/* basic reset */
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,-apple-system;background:linear-gradient(180deg,#f7efe0,#e9d0b0);-webkit-font-smoothing:antialiased;color:#2f2118}
+*{box-sizing:border-box;font-family:system-ui,-apple-system;}
 
-/* frame */
-.wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-.frame{width:100%;max-width:1024px;background:linear-gradient(180deg,var(--wood1),var(--wood2));padding:18px;border-radius:20px;box-shadow:0 40px 90px rgba(0,0,0,.45)}
-.panel{background:var(--paper);border-radius:14px;padding:18px;border:6px solid #3b2a20;min-height:760px;position:relative;overflow:hidden}
-
-/* header */
-.header{display:flex;justify-content:space-between;align-items:center}
-.title{color:var(--red);font-weight:900;margin:0;font-size:1.3rem}
-.subtitle{color:var(--muted);font-size:.95rem}
-
-/* center area */
-.center{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:12px}
-
-/* DISK (texture hình cái đĩa rung lắc) */
-.disk{
-  width:160px;height:160px;border-radius:999px;
+body{
+  margin:0;
+  min-height:100vh;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), transparent 12%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 6px),
-    linear-gradient(180deg,#151515,#2b2b2b);
-  box-shadow:inset 0 -12px 40px rgba(0,0,0,.6), 0 12px 30px rgba(0,0,0,.45);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px;font-weight:900;
-  border:3px solid rgba(255,215,0,0.07);
-  transform-origin:center;
+    radial-gradient(circle at top,#3a0f0f,#120707),
+    url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
-/* disk rung animation */
-@keyframes diskRumble{0%{transform:rotate(0deg)}25%{transform:rotate(4deg)}50%{transform:rotate(0deg)}75%{transform:rotate(-4deg)}100%{transform:rotate(0deg)}}
-.disk.rumble{animation:diskRumble .12s infinite}
 
-/* circle (where sticks orbit) */
-.circle{position:relative;width:360px;height:360px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:8px auto;pointer-events:none}
-.grid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.grid-inner{position:relative;width:100%;height:100%;pointer-events:auto}
-
-/* TUBE (ống quẻ) */
-.tube{width:140px;height:180px;border-radius:16px;background:linear-gradient(180deg,#4b2e2e,#2f1f18);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px rgba(0,0,0,.3);transform-origin:center}
-.tube.rattle{animation:shakeTube .12s infinite}
-@keyframes shakeTube{0%{transform:rotate(0)}25%{transform:rotate(5deg)}50%{transform:rotate(0)}75%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
-
-/* ENERGY */
-.energy{width:86%;height:8px;background:#efe2d2;border-radius:999px;overflow:hidden;margin-top:8px}
-.energy-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#ffd06a);transition:width .25s linear}
-
-/* STICK (que kem) */
-.stick{
-  width:var(--card-w);height:var(--card-h);border-radius:18px 18px 8px 8px;
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);transform-origin:center bottom;
-  transition:transform .45s cubic-bezier(.2,.9,.2,1),left .45s,top .45s,opacity .3s;
-  cursor:pointer;pointer-events:auto;box-shadow:0 12px 30px rgba(0,0,0,.18);
+.panel{
+  width:95%;
+  max-width:420px;
+  background:var(--giay);
+  border:10px double #7a3e12;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 0 30px rgba(255,215,0,.3);
+  position:relative;
+  text-align:center;
 }
-.stick.purple{
+
+.title{
+  font-weight:800;
+  font-size:22px;
+  color:var(--do);
+  text-shadow:0 2px 0 var(--vang);
+}
+
+.dev{
+  position:absolute;
+  left:8px;
+  bottom:6px;
+  font-size:11px;
+  opacity:.6;
+}
+
+/* ===== ĐĨA XÓC ===== */
+.dia{
+  width:200px;
+  height:200px;
+  margin:18px auto;
+  border-radius:50%;
   background:
-    linear-gradient(180deg,#6a1b9a,#8e44ad),
-    repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 6px);
-  color:#fff;border:3px solid rgba(214,180,255,.9);
-  box-shadow:0 14px 36px rgba(115,54,153,.22), inset 0 -6px 12px rgba(0,0,0,.06);
+    radial-gradient(circle at 30% 30%,#ffeaa7,#d35400),
+    url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+  box-shadow:
+    inset 0 0 25px rgba(0,0,0,.5),
+    0 10px 25px rgba(0,0,0,.6);
 }
-.stick.rattle{animation:stickRattle .34s infinite}
-@keyframes stickRattle{0%{transform:translate(-50%,-50%) rotate(0)}25%{transform:translate(-50%,-58%) rotate(-6deg)}50%{transform:translate(-50%,-50%) rotate(6deg)}75%{transform:translate(-50%,-58%) rotate(-3deg)}100%{transform:translate(-50%,-50%) rotate(0)}}
 
-/* 3D flip inner/front/back */
-.stick-3d{perspective:900px;width:100%;height:100%}
-.stick-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.9,.2,1)}
-.stick-inner.flipped{transform:rotateY(180deg) scale(1.04)}
-.stick-face{position:absolute;inset:0;border-radius:inherit;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;padding:8px}
-.stick-back{background:var(--paper);border:2px solid rgba(0,0,0,.06);color:var(--muted)}
-.stick-front{background:linear-gradient(180deg,#fffdf6,#fff6ea);border:2px solid rgba(0,0,0,.08);transform:rotateY(180deg);color:#3b2a20;font-size:.95rem;line-height:1.3;text-align:center;padding:10px}
-
-/* BIG overlay */
-.big{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);z-index:9999;width:92%;max-width:640px;background:linear-gradient(180deg,#fffdf6,#fff6ea);border-radius:14px;padding:18px;box-shadow:0 40px 120px rgba(0,0,0,.6);animation:bigPop .28s ease forwards}
-@keyframes bigPop{from{transform:translate(-50%,-50%) scale(.6);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
-.big-title{font-weight:900;color:var(--red);font-size:1.08rem;margin-bottom:10px}
-.big-text{color:#4b2a20;font-size:1rem;line-height:1.5}
-.big-start{margin-top:12px;text-align:center;font-weight:900;color:var(--red);font-size:1.05rem}
-
-/* RESULT BOX */
-.result-box{margin-top:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#fffdf6,#fff6ea);min-height:120px;font-size:.95rem;color:#3b2a20}
-.notice{margin-top:10px;padding:12px;border-radius:10px;background:linear-gradient(90deg,#fff6d6,#fff0bf);font-weight:800;color:#3b2a20;text-align:center}
-
-/* MODAL (texture question) */
-.modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:9999;
+.shake{
+  animation:shake .15s infinite;
 }
-.modal-box{
-  width:92%;max-width:520px;background:linear-gradient(180deg,#fff8ee,#f2e4cf);border-radius:14px;padding:18px;border:6px double #8b5a2b;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6)
+
+@keyframes shake{
+  0%{transform:translate(0) rotate(0)}
+  25%{transform:translate(2px,-2px) rotate(1deg)}
+  50%{transform:translate(-2px,2px) rotate(-1deg)}
+  75%{transform:translate(2px,2px) rotate(1deg)}
+  100%{transform:translate(0) rotate(0)}
 }
-.modal-disk{margin:12px auto;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.modal-disk .disk{width:140px;height:140px}
 
-/* buttons */
-.btn{padding:10px 14px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
-.btn-primary{background:linear-gradient(180deg,var(--red),#9e2a24);color:#fff}
-.btn-gold{background:linear-gradient(180deg,var(--gold),#e6c200);color:#3b2a20}
-.btn-muted{background:transparent;border:2px dashed rgba(0,0,0,.06);color:#6b4a39}
+/* ===== QUESTION ===== */
+.box{
+  background:
+    linear-gradient(#fff8dc,#f5deb3),
+    url("https://www.transparenttextures.com/patterns/old-wall.png");
+  border:3px solid #8b4513;
+  border-radius:12px;
+  padding:14px;
+  margin-top:10px;
+}
 
-/* typewriter (for reveal) */
-.typewriter{display:inline-block;white-space:nowrap;overflow:hidden;border-right:.12em solid rgba(0,0,0,.15)}
-/* small dev credit */
-.dev{position:fixed;left:8px;bottom:6px;font-size:11px;color:#5c4033;opacity:.95}
+.hidden{display:none}
 
-/* responsive */
-@media(max-width:520px){
-  .circle{width:240px;height:240px}
-  :root{--card-w:64px;--card-h:98px}
-  .disk{width:120px;height:120px}
-  .modal-disk .disk{width:120px;height:120px}
+.btn{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  background:linear-gradient(#ffd700,#f39c12);
+  box-shadow:0 4px 0 #c27c0e;
+}
+
+.btn:active{
+  transform:translateY(4px);
+  box-shadow:none;
+}
+
+/* ===== QUE ===== */
+.que-wrap{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.que{
+  width:42px;
+  height:140px;
+  background:linear-gradient(#f5deb3,#deb887);
+  border-radius:6px;
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+  cursor:pointer;
+  transition:.3s;
+}
+
+.que:hover{transform:translateY(-8px)}
+
+.flip{
+  animation:flip .6s forwards;
+}
+
+@keyframes flip{
+  0%{transform:rotateY(0)}
+  100%{transform:rotateY(180deg) scale(1.2)}
+}
+
+/* ===== RESULT ===== */
+.result{
+  margin-top:12px;
+  padding:15px;
+  border:3px solid #8b4513;
+  border-radius:12px;
+  background:#fffaf0;
+  animation:zoom .5s ease;
+}
+
+@keyframes zoom{
+  from{transform:scale(.8);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="frame">
-      <div class="panel" role="main" aria-live="polite">
-        <div class="header">
-          <div>
-            <h1 class="title">🔮 QUẺ ĐỊNH MỆNH 10/5 — SUPREME</h1>
-            <div class="subtitle">Xóc → 6 que kem → Rút 1 | 100 câu bói | dev by Hai Duong</div>
-          </div>
-          <div style="color:var(--muted);font-size:.95rem">Tone: <strong style="color:var(--red)">Đỏ đô</strong> · <strong style="color:var(--gold)">Vàng kim</strong></div>
-        </div>
+<div class="panel">
+  <div class="title">🔮 QUẺ ĐỊNH MỆNH 10/5</div>
+  <div id="dia" class="dia"></div>
 
-        <div class="center">
-          <!-- Orb + spinning circle -->
-          <div id="orb" class="orb">🔮</div>
-          <div id="circle" class="circle" style="display:none"><div class="grid"><div id="gridInner" class="grid-inner"></div></div></div>
-
-          <!-- tube -->
-          <div id="tube" class="tube" title="Ống quẻ">
-            <svg width="64" height="64" viewBox="0 0 24 24"><path fill="#f5e6d9" d="M12 2c1.1 0 2 .9 2 2v4h-4V4c0-1.1.9-2 2-2z"/><path fill="#3b2a20" d="M7 7v12c0 2.2 1.8 4 4 4s4-1.8 4-4V7H7z"/></svg>
-          </div>
-
-          <div class="energy" aria-hidden="true"><div id="energyFill" class="energy-fill"></div></div>
-
-          <div style="margin-top:12px" class="controls">
-            <button id="btnStart" class="btn btn-primary">BẮT ĐẦU</button>
-            <button id="btnShake" class="btn btn-gold" disabled>LẮC ỐNG</button>
-            <button id="btnReset" class="btn btn-muted">Reset (dev)</button>
-          </div>
-
-          <div class="rewards" id="rewardSummary" aria-hidden="true" style="margin-top:12px">
-            <div class="reward">25% → Móc khóa</div>
-            <div class="reward">10% → Phụ bán 15 phút (cooldown)</div>
-            <div class="reward">1% → Dancer (show)</div>
-            <div class="reward">64% → Không thưởng</div>
-          </div>
-
-          <div id="resultBox" class="result-box">
-            <div id="status"><strong>Trạng thái:</strong> Chưa rút quẻ</div>
-            <div id="hint" style="margin-top:8px;color:var(--muted)">Nhấn BẮT ĐẦU → Trả lời 2 câu hỏi trên đĩa → LẮC ỐNG → Chọn 1 que kem.</div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div id="q1" class="box">
+    <h3>Bạn đã sẵn sàng chưa?</h3>
+    <button class="btn" onclick="next1()">Sẵn sàng</button>
   </div>
+
+  <div id="q2" class="box hidden">
+    <h3>Tương lai 2026 của bạn là gì?</h3>
+    <button class="btn" onclick="next2()">Xem quẻ</button>
+  </div>
+
+  <div id="birth" class="box hidden">
+    <h3>Nhập ngày sinh</h3>
+    <input type="date" id="dob" style="width:100%;padding:10px">
+    <button class="btn" onclick="start()">Xóc quẻ</button>
+  </div>
+
+  <div id="pick" class="hidden">
+    <p>Chọn 1 que</p>
+    <div class="que-wrap" id="ques"></div>
+  </div>
+
+  <div id="result" class="hidden"></div>
 
   <div class="dev">dev by Hai Duong</div>
+</div>
 
-  <!-- ========== Modal Texture: Question 1 (Bạn đã sẵn sàng chưa?) ========== -->
-  <div id="modal1" class="modal" style="display:flex">
-    <div class="modal-box" role="dialog" aria-modal="true">
-      <div class="modal-disk">
-        <div id="modalDisk1" class="disk">BẮT ĐẦU</div>
-        <div style="margin-top:12px;font-weight:900;color:var(--red)">Bạn đã sẵn sàng chưa?</div>
-        <div style="margin-top:8px;color:var(--muted)">Nhấn "ĐỒNG Ý" để triệu hồi âm thanh và tiếp tục trải nghiệm.</div>
-      </div>
-      <div style="display:flex;gap:10px;justify-content:center;margin-top:14px">
-        <button id="m1-no" class="btn btn-muted">Chưa</button>
-        <button id="m1-yes" class="btn btn-primary">ĐỒNG Ý</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========== Modal Texture: Question 2 (Tương lai 2026 của bạn) ========== -->
-  <div id="modal2" class="modal" style="display:none">
-    <div class="modal-box" role="dialog" aria-modal="true">
-      <div class="modal-disk">
-        <div id="modalDisk2" class="disk">2026</div>
-        <div style="margin-top:12px;font-weight:900;color:var(--red)">Tương lai 2026 của bạn là?</div>
-        <div style="margin-top:8px;color:var(--muted)">Viết 1 câu ngắn (tự do) — dùng để cá nhân hoá hiển thị.</div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;justify-content:center;margin-top:10px">
-        <input id="futureInput" type="text" placeholder="Ví dụ: Vô địch bóng chuyền 10/5" style="padding:8px;border-radius:8px;border:1px solid #e0cfc0;width:65%"/>
-        <button id="m2-done" class="btn btn-primary">XONG</button>
-      </div>
-    </div>
-  </div>
+<audio id="click" src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b1b4e1f38.mp3"></audio>
+<audio id="shakeS" loop src="https://cdn.pixabay.com/audio/2022/02/23/audio_1b4d6d1dcb.mp3"></audio>
+<audio id="good" src="https://cdn.pixabay.com/audio/2022/10/30/audio_0b9c5b6f74.mp3"></audio>
+<audio id="bad" src="https://cdn.pixabay.com/audio/2022/03/10/audio_7c65cfc9e2.mp3"></audio>
+<audio id="xoet" src="https://cdn.pixabay.com/audio/2021/08/04/audio_3f42d7d1de.mp3"></audio>
 
 <script>
-/* ===========================
-   Toàn bộ logic JS (Tiếng Việt)
-   - 100 câu bói
-   - 2 modal textured (disk) để unlock audio
-   - xóc ống → 6 que kem tím → chọn 1 → xoẹt → zoom lớn + typewriter
-   - phần thưởng: 25% keychain (QR), 10% phu15 (cooldown 15 phút), 1% dancer
-   - localStorage chặn rút lại
-   - texture disk rung khi modal hiển thị
-   =========================== */
+const dia=document.getElementById("dia");
+const clickS=document.getElementById("click");
+const shakeS=document.getElementById("shakeS");
+const good=document.getElementById("good");
+const bad=document.getElementById("bad");
+const xoet=document.getElementById("xoet");
 
-/* ---- Data: kho 100 câu ---- */
-const fortunes = (function(){
-  const camp = [
-    "Ráng cố gắng, đừng sân si — 10/5 có cơ hội vô địch bóng chuyền.",
-    "Đoàn kết, tập trung; tinh thần đội giúp 10/5 chiến thắng.",
-    "Chăm luyện, giữ hòa khí; phần thưởng cho tập thể.",
-    "Giúp nhau, 10/5 sẽ được vinh danh trong trại.",
-    "Tinh thần đồng đội: hành động nhỏ dẫn tới chiến thắng."
-  ];
-  const good = [
-    "Đại cát: Vận may đang mỉm cười. Ghé quầy 10/5 mua nước để kích lộc.",
-    "Lộc ăn: Có cơ may nhỏ, nhận lời khen; ủng hộ quầy 10/5.",
-    "Phúc lộc: Gặp người tốt, nắm bắt cơ hội.",
-    "Tiểu cát: Việc nhỏ thành công, tiếp tục nỗ lực.",
-    "Thịnh vượng: Học hành suôn sẻ; giữ tinh thần."
-  ];
-  const bad = [
-    "Hạn thị phi: Cẩn thận lời nói, tránh hiểu lầm.",
-    "Tiểu hung: Có chút trục trặc, hãy bình tĩnh.",
-    "Cẩn trọng: Mất đồ hoặc hiểu lầm nhỏ, kiểm tra kỹ.",
-    "Sao xấu: Ngày hơi khó, nghỉ ngơi và uống nước.",
-    "Xui nhỏ: Đừng nóng vội, chuyện qua nhanh."
-  ];
-  const a=[];
-  for(let i=0;i<50;i++) a.push({id:i+1,category:'good',text: i<20?camp[i%camp.length] : good[i%good.length]});
-  for(let i=0;i<50;i++) a.push({id:51+i,category:'bad',text: bad[i%bad.length]});
-  // shuffle
-  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
-  return a;
-})();
-
-/* ---- Phần thưởng & storage ---- */
-const REWARDS = [
-  {key:'keychain', label:'Móc khóa', prob:0.25},
-  {key:'phu15', label:'Phụ bán 15 phút', prob:0.10},
-  {key:'dancer', label:'Xem Dancer (show)', prob:0.01}
-];
-const STORAGE_KEY = 'que_10_5_result_vcomplete';
-const PHU15_KEY = 'phu15_lock_until_vcomplete';
-const COOLDOWN_MS = 15 * 60 * 1000;
-
-/* ---- Audio: WebAudio synth SFX ---- */
-let audioCtx=null, masterGain=null, shakeInterval=null, ambientOsc=null;
-function ensureAudio(){ if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); masterGain = audioCtx.createGain(); masterGain.gain.value=0.95; masterGain.connect(audioCtx.destination);} }
-function sfxClick(){ ensureAudio(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='square'; o.frequency.value=1200; g.gain.setValueAtTime(0.0001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.12,audioCtx.currentTime+0.002); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.12); o.connect(g); g.connect(masterGain); o.start(); o.stop(audioCtx.currentTime+0.14); }
-function sfxStartRattle(){ ensureAudio(); if(shakeInterval) return; shakeInterval=setInterval(()=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='triangle'; o.frequency.value=360+Math.random()*300; g.gain.setValueAtTime(0.0001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.07,audioCtx.currentTime+0.01); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.18); o.connect(g); g.connect(masterGain); o.start(); o.stop(audioCtx.currentTime+0.18); }, 140); }
-function sfxStopRattle(){ if(shakeInterval){ clearInterval(shakeInterval); shakeInterval=null; } }
-function sfxSwipe(){ ensureAudio(); const now=audioCtx.currentTime; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(1200,now); o.frequency.exponentialRampToValueAtTime(220,now+0.28); g.gain.setValueAtTime(0.0001,now); g.gain.exponentialRampToValueAtTime(0.14,now+0.01); g.gain.exponentialRampToValueAtTime(0.0001,now+0.6); o.connect(g); g.connect(masterGain); o.start(); o.stop(now+0.6); }
-function sfxWin(){ ensureAudio(); const notes=[880,1100,1320]; let t=audioCtx.currentTime; notes.forEach(n=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='triangle'; o.frequency.value=n; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3); o.connect(g); g.connect(masterGain); o.start(t); o.stop(t+0.3); t+=0.18; }); }
-function sfxSad(){ ensureAudio(); const notes=[440,392,349]; let t=audioCtx.currentTime; notes.forEach(n=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=n; g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.13,t+0.06); g.gain.linearRampToValueAtTime(0.0001,t+0.9); o.connect(g); g.connect(masterGain); o.start(t); o.stop(t+0.95); t+=0.8; }); }
-function sfxAmbient(){ ensureAudio(); if(ambientOsc) return; ambientOsc=audioCtx.createOscillator(); const g=audioCtx.createGain(); ambientOsc.type='sine'; ambientOsc.frequency.value=120; g.gain.setValueAtTime(0.0001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.02,audioCtx.currentTime+0.06); ambientOsc.connect(g); g.connect(masterGain); ambientOsc.start(); setTimeout(()=>{ try{ ambientOsc.stop(); ambientOsc=null; }catch(e){} },1600); }
-
-/* ---- DOM Refs ---- */
-const btnStart = document.getElementById('btnStart');
-const btnShake = document.getElementById('btnShake');
-const btnReset = document.getElementById('btnReset');
-const tube = document.getElementById('tube');
-const circle = document.getElementById('circle');
-const gridInner = document.getElementById('gridInner');
-const energyFill = document.getElementById('energyFill');
-const resultBox = document.getElementById('resultBox');
-const hint = document.getElementById('hint');
-const modal1 = document.getElementById('modal1');
-const modal2 = document.getElementById('modal2');
-const modalDisk1 = document.getElementById('modalDisk1');
-const modalDisk2 = document.getElementById('modalDisk2');
-const futureInput = document.getElementById('futureInput');
-
-let hasDrawn=false, storedResult=null;
-
-/* load previous result if any */
-(function(){ const p = localStorage.getItem(STORAGE_KEY); if(p){ storedResult = JSON.parse(p); hasDrawn=true; renderFinal(storedResult,true); } })();
-
-/* ---- Modal 1 interactions (textured disk) ---- */
-document.getElementById('m1-no').addEventListener('click', ()=>{
-  // nhẹ nhàng rung disk to indicate no
-  modalDisk1.classList.add('rumble');
-  navigator.vibrate?.(80);
-  setTimeout(()=> modalDisk1.classList.remove('rumble'), 450);
-});
-document.getElementById('m1-yes').addEventListener('click', async ()=>{
-  // rung, unlock audio, show modal2
-  modalDisk1.classList.add('rumble');
-  navigator.vibrate?.(160);
-  try{ ensureAudio(); if(audioCtx.state==='suspended') await audioCtx.resume(); }catch(e){}
-  sfxClick();
-  setTimeout(()=> modalDisk1.classList.remove('rumble'), 500);
-  // show second modal (textured)
-  modal1.style.display='none';
-  modal2.style.display='flex';
-  modalDisk2.classList.add('rumble');
-  setTimeout(()=> modalDisk2.classList.remove('rumble'), 700);
-});
-
-/* ---- Modal 2 (future input) ---- */
-document.getElementById('m2-done').addEventListener('click', ()=>{
-  const txt = (futureInput.value || '').trim();
-  sessionStorage.setItem('future_hint', txt);
-  modal2.style.display='none';
-  sfxClick();
-  // enable shake (unless already drawn)
-  if(hasDrawn){ hint.innerText='Bạn đã rút trước đó — kết quả hiện bên dưới.'; renderFinal(storedResult,true); }
-  else { btnShake.disabled=false; hint.innerText='Đã bật âm thanh — bấm LẮC ỐNG để xóc 6 que kem.'; }
-});
-
-/* ---- Shake flow ---- */
-btnStart.addEventListener('click', ()=> {
-  // if user clicked start in main UI we also open modal1 (redundant)
-  modal1.style.display='flex';
-  modalDisk1.classList.add('rumble');
-  navigator.vibrate?.(90);
-  setTimeout(()=> modalDisk1.classList.remove('rumble'), 800);
-});
-
-btnShake.addEventListener('click', ()=>{
-  if(hasDrawn){ if(storedResult) renderFinal(storedResult,true); return; }
-  sfxClick();
-  tube.classList.add('rattle');
-  navigator.vibrate?.([200,120,200]);
-  sfxStartRattle();
-  energyFill.style.width='70%';
-  setTimeout(()=>{ tube.classList.remove('rattle'); sfxStopRattle(); spawnSix(); }, 1000);
-});
-
-/* ---- spawn 6 purple sticks orbiting the disk ---- */
-function spawnSix(){
-  gridInner.innerHTML=''; circle.style.display='block';
-  const radius = Math.min(140, Math.round(window.innerWidth * 0.18));
-  const indices = pickUniqueIndices(6, fortunes.length);
-  indices.forEach((fi,i)=>{
-    const angle = (i/6)*Math.PI*2 - Math.PI/2;
-    const x = Math.cos(angle)*radius;
-    const y = Math.sin(angle)*radius;
-    const stick = document.createElement('div');
-    stick.className='stick purple rattle';
-    stick.style.left = `calc(50% + ${x}px)`;
-    stick.style.top = `calc(50% + ${y}px)`;
-    stick.dataset.index = fi;
-    // 3D structure
-    const s3 = document.createElement('div'); s3.className='stick-3d';
-    const inner = document.createElement('div'); inner.className='stick-inner';
-    const back = document.createElement('div'); back.className='stick-face stick-back'; back.innerHTML=`<div style="font-weight:900">QUE</div>`;
-    const front = document.createElement('div'); front.className='stick-face stick-front'; front.innerHTML=`<div style="font-weight:700">Ẩn</div>`;
-    inner.appendChild(back); inner.appendChild(front); s3.appendChild(inner); stick.appendChild(s3);
-    stick.addEventListener('click', onStickClick, {once:true});
-    gridInner.appendChild(stick);
-  });
+function next1(){
+  clickS.play();
+  q1.classList.add("hidden");
+  q2.classList.remove("hidden");
+}
+function next2(){
+  clickS.play();
+  q2.classList.add("hidden");
+  birth.classList.remove("hidden");
 }
 
-/* ---- when user picks a stick ---- */
-function onStickClick(e){
-  if(hasDrawn) return;
-  const stick = e.currentTarget;
-  document.querySelectorAll('.stick').forEach(s=>{ s.classList.remove('rattle'); s.style.pointerEvents='none'; });
-  const idx = Number(stick.dataset.index);
-  sfxSwipe(); sfxAmbient(); navigator.vibrate?.(140);
-  stick.style.left='50%'; stick.style.top='40%'; stick.style.transform='translate(-50%,-50%) scale(1.2)';
+function start(){
+  const d=document.getElementById("dob").value;
+  if(!d) return alert("Nhập ngày sinh");
+  localStorage.setItem("dob",d);
+
+  birth.classList.add("hidden");
+  dia.classList.add("shake");
+  shakeS.play();
+  navigator.vibrate?.(200);
+
   setTimeout(()=>{
-    const inner = stick.querySelector('.stick-inner'); inner.classList.add('flipped');
-    const fort = fortunes[idx];
-    const front = stick.querySelector('.stick-front'); front.innerHTML = `<div style="font-weight:800">${escapeHtml(fort.text)}</div>`;
-    // reward decision with cooldown respected
-    const reward = rollRewardConsideringCooldown();
-    const final = {...fort, rewardKey: reward?reward.key:null, rewardLabel: reward?reward.label:null, ts: Date.now(), futureHint: sessionStorage.getItem('future_hint') || ''};
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(final));
-    hasDrawn=true; storedResult=final;
-    if(final.rewardKey==='phu15') localStorage.setItem(PHU15_KEY, String(Date.now()+COOLDOWN_MS));
-    setTimeout(()=> showBig(final), 420);
-  }, 420);
+    dia.classList.remove("shake");
+    shakeS.pause();
+    showQues(d);
+  },2000);
 }
 
-/* ---- reward roll respecting phu15 cooldown ---- */
-function rollRewardConsideringCooldown(){
-  const now = Date.now();
-  const phuUntil = Number(localStorage.getItem(PHU15_KEY) || 0);
-  const available = REWARDS.filter(r => !(r.key==='phu15' && now < phuUntil));
-  // choose by raw probabilities: if some excluded, their prob becomes "none"
-  let r = Math.random();
-  for(const it of available){
-    if(r < it.prob) return it;
-    r -= it.prob;
+function seedRand(seed){
+  let x=Math.sin(seed)*10000;
+  return x-Math.floor(x);
+}
+
+function showQues(d){
+  pick.classList.remove("hidden");
+  ques.innerHTML="";
+  for(let i=0;i<6;i++){
+    const q=document.createElement("div");
+    q.className="que";
+    q.onclick=()=>pickQue(d,i,q);
+    ques.appendChild(q);
   }
-  return null;
 }
 
-/* ---- show big reveal (typewriter + confetti + QR if keychain) ---- */
-function showBig(final){
-  if(final.category === 'good'){ try{ sfxWin(); }catch(e){}; confetti({particleCount:160,spread:90}); }
-  else { try{ sfxSad(); }catch(e){}; }
-  const big = document.createElement('div'); big.className='big';
-  let rewardHtml = '';
-  if(final.rewardLabel){
-    rewardHtml = `<div style="margin-top:12px;font-weight:900;color:#2d5f2d">🎁 Phần thưởng: ${escapeHtml(final.rewardLabel)}</div>`;
-    if(final.rewardKey==='keychain'){
-      const payload = encodeURIComponent(`QUE|ID:${final.id}|TS:${final.ts}`);
-      const qrUrl = `https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=${payload}&choe=UTF-8`;
-      rewardHtml += `<div style="margin-top:10px;color:#2d5f2d;font-weight:800">👉 Mang màn hình đến quầy 10/5 để nhận móc khóa.</div><div style="margin-top:10px"><img src="${qrUrl}" alt="QR" style="width:120px;height:120px;border-radius:8px"></div>`;
-    } else if(final.rewardKey==='phu15'){
-      const until = Number(localStorage.getItem(PHU15_KEY)||0);
-      const mins = Math.ceil((until - Date.now())/60000);
-      rewardHtml += `<div style="margin-top:8px;color:#6b4a39">Lưu ý: 'Phụ bán 15 phút' đã kích hoạt. Khóa ~${mins>0?mins:15} phút.</div>`;
-    } else if(final.rewardKey==='dancer'){
-      rewardHtml += `<div style="margin-top:8px;color:#6b4a39">Bạn được xem phần biểu diễn Dancer (show).</div>`;
-    }
+function pickQue(d,i,el){
+  xoet.play();
+  el.classList.add("flip");
+  pick.classList.add("hidden");
+
+  const seed=new Date(d).getTime()+i;
+  const r=seedRand(seed);
+
+  let text,goodLuck;
+  if(r<0.25){
+    text="🎁 Bạn trúng MÓC KHOÁ – hãy mang màn hình ra quầy 10/5 nhận quà!";
+    goodLuck=true;
+  }else if(r<0.35){
+    text="🧑‍🍳 Bạn sẽ phụ bán 15 phút – góp công cho trại 10/5!";
+    goodLuck=false;
+  }else{
+    text="🌟 2026: Giữ tâm vững – tránh sân si – đoàn kết như 10/5 sẽ thắng lớn!";
+    goodLuck=true;
   }
-  const futurePart = final.futureHint ? `<div style="margin-top:8px;color:#6b4a39">Bạn đã viết: <strong>${escapeHtml(final.futureHint)}</strong></div>` : '';
-  big.innerHTML = `
-    <div class="big-title">${final.category === 'good' ? '🌟 QUẺ MAY MẮN' : '⚠️ QUẺ XUI'}</div>
-    <div class="big-text"><span id="typeText" class="typewriter"></span></div>
-    ${rewardHtml}
-    ${futurePart}
-    <div class="big-start">✨ BẮT ĐẦU ĐI ✨</div>
-  `;
-  document.querySelectorAll('.big').forEach(b=>b.remove());
-  document.body.appendChild(big);
-  // typewriter
-  const typeEl = document.getElementById('typeText');
-  typeWriter(final.text, typeEl, 18);
-  // remove sticks & circle
-  setTimeout(()=>{ gridInner.innerHTML=''; circle.style.display='none'; }, 700);
-  btnShake.disabled = true;
-  big.addEventListener('click', ()=> big.remove());
-  // vibrate on reveal
-  navigator.vibrate?.([100,60,100]);
+
+  setTimeout(()=>{
+    result.innerHTML="<div class='result'>"+text+"</div>";
+    result.classList.remove("hidden");
+    (goodLuck?good:bad).play();
+    navigator.vibrate?.([100,50,100]);
+  },500);
 }
-
-/* ---- render final when re-open ---- */
-function renderFinal(final, fromStorage){
-  resultBox.classList.remove('good','bad');
-  if(final.category==='good') resultBox.classList.add('good');
-  if(final.category==='bad') resultBox.classList.add('bad');
-  let html = `<div style="font-weight:800">${final.category==='good'?'Quẻ may mắn':'Quẻ xui'}</div>`;
-  html += `<div style="margin-top:8px;font-weight:700">${escapeHtml(final.text)}</div>`;
-  html += `<div style="margin-top:8px;color:#6b4a39;font-size:.9rem">Quẻ ID: ${escapeHtml(String(final.id))} · ${new Date(final.ts).toLocaleString()}</div>`;
-  if(final.rewardLabel){
-    html += `<div class="notice">🎁 Bạn trúng: <strong>${escapeHtml(final.rewardLabel)}</strong>! ${final.rewardKey==='keychain'? 'Mang màn hình đến quầy 10/5 để nhận.' : ''}</div>`;
-  }
-  resultBox.innerHTML = html;
-  btnShake.disabled = true;
-}
-
-/* ---- helpers ---- */
-function pickUniqueIndices(n, max){ const set=new Set(); while(set.size<n) set.add(Math.floor(Math.random()*max)); return Array.from(set); }
-function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-function typeWriter(text, el, speed=18){ el.textContent=''; let i=0; const t=setInterval(()=>{ el.textContent += text.charAt(i); i++; if(i>=text.length){ clearInterval(t); el.style.borderRight='none'; } }, speed); }
-
-/* ---- Reset Dev ---- */
-btnReset.addEventListener('click', ()=>{
-  localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(PHU15_KEY);
-  hasDrawn=false; storedResult=null; gridInner.innerHTML=''; circle.style.display='none';
-  resultBox.innerHTML = `<div id="status"><strong>Trạng thái:</strong> Chưa rút quẻ</div><div id="hint" style="margin-top:8px;color:var(--muted)">Bấm BẮT ĐẦU → Trả lời 2 câu → LẮC ỐNG → Chọn 1 que kem.</div>`;
-  btnShake.disabled=true;
-  alert('Đã reset localStorage.');
-});
-
-/* resume audio on first gesture for browsers */
-document.addEventListener('click', async function resumeOnce(){ try{ ensureAudio(); if(audioCtx.state==='suspended') await audioCtx.resume(); }catch(e){} document.removeEventListener('click', resumeOnce); });
-
-/* boot: if stored result exists, show it */
-(function boot(){
-  const p = localStorage.getItem(STORAGE_KEY);
-  if(p){ storedResult = JSON.parse(p); hasDrawn = true; renderFinal(storedResult,true); }
-  circle.style.display='none';
-  btnShake.disabled=true;
-})();
 </script>
 </body>
 </html>
