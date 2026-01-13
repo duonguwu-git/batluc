@@ -1,504 +1,269 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Quẻ Định Mệnh 10/5 — Xóc 6 Lá</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xin Quẻ Định Mệnh 10/5</title>
 
-<!-- confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
 :root{
-  --red:#c0392b;
-  --gold:#ffd700;
-  --paper:#fff5e6;
-  --wood1:#6d4c41;
-  --wood2:#4b2e2e;
-  --card-w:78px;
-  --card-h:114px;
+ --red:#c0392b;
+ --gold:#ffd700;
+ --paper:#fff5e6;
 }
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto;}
 body{
-  background:linear-gradient(180deg,#fff7ee,#efe1d0);
-  display:flex;align-items:center;justify-content:center;padding:14px;
-}
-.panel-wrap{
-  width:100%;max-width:980px;
-  padding:18px;background:linear-gradient(180deg,var(--wood1),var(--wood2));
-  border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.45);
+ margin:0;
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:radial-gradient(circle,#fff8ef,#e6c9a8);
+ font-family:system-ui;
 }
 .panel{
-  background:var(--paper);border-radius:12px;padding:16px;border:6px solid #3b2a20;
-  min-height:560px;
+ width:92vw;
+ max-width:420px;
+ background:var(--paper);
+ border-radius:18px;
+ padding:18px;
+ border:8px double #4e342e;
+ box-shadow:0 15px 40px rgba(0,0,0,.4);
+ position:relative;
 }
-.header{display:flex;justify-content:space-between;align-items:center}
-.title{color:var(--red);margin:0;font-size:1.25rem}
-.subtitle{color:#5a4038;font-size:.9rem}
-.center{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:12px}
-.tube{width:120px;height:160px;border-radius:14px;background:linear-gradient(180deg,#4b2e2e,#2f1f18);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.35);transform-origin:center}
-.energy{width:84%;height:8px;background:#efe2d2;border-radius:999px;overflow:hidden;margin-top:10px}
-.energy-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#ffd96a);transition:width .25s linear}
+h1{text-align:center;color:var(--red);margin:6px}
+.sub{text-align:center;font-size:.9rem;color:#6b4a39}
 
-.cards-area{width:100%;height:160px;position:relative;display:flex;align-items:center;justify-content:center}
+.tube{
+ width:120px;height:170px;
+ background:linear-gradient(#5d4037,#2e1b14);
+ border-radius:16px;
+ margin:20px auto;
+}
+.shaking{
+ animation:shake .15s infinite;
+}
+@keyframes shake{
+ 0%{transform:rotate(0deg)}
+ 25%{transform:rotate(2deg)}
+ 50%{transform:rotate(0deg)}
+ 75%{transform:rotate(-2deg)}
+ 100%{transform:rotate(0deg)}
+}
+
+.cards{
+ position:relative;
+ height:160px;
+ margin-top:10px;
+}
 .card{
-  width:var(--card-w);height:var(--card-h);border-radius:8px;
-  background:
-    linear-gradient(180deg,#fff7ed,#f6ead6),
-    repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 6px);
-  border:2px solid rgba(0,0,0,0.06);
-  box-shadow:0 10px 18px rgba(0,0,0,.22);
-  position:absolute;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--red);
-  transform-origin:bottom center;user-select:none;touch-action:manipulation;
-  transition:transform .28s ease, box-shadow .18s ease, top .28s;
+ width:70px;height:110px;
+ background:#fff;
+ border-radius:8px;
+ position:absolute;
+ left:50%;
+ top:30px;
+ transform-origin:bottom center;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:700;
+ color:var(--red);
+ box-shadow:0 8px 18px rgba(0,0,0,.35);
+ cursor:pointer;
+ transition:.4s;
 }
-.card.shake{animation:cardShake .32s infinite}
-@keyframes cardShake{
-  0%{transform:translateY(0) rotate(0deg)}
-  25%{transform:translateY(-6px) rotate(-3deg)}
-  50%{transform:translateY(0) rotate(3deg)}
-  75%{transform:translateY(-6px) rotate(-2deg)}
-  100%{transform:translateY(0) rotate(0deg)}
+.card:hover{transform:scale(1.05) translateX(-50%)}
+
+.big-card{
+ background:#fffdf6;
+ border-radius:16px;
+ padding:16px;
+ margin-top:12px;
+ box-shadow:0 10px 30px rgba(0,0,0,.35);
+ animation:pop .5s;
+}
+@keyframes pop{
+ from{transform:scale(.7);opacity:0}
+ to{transform:scale(1);opacity:1}
+}
+.start-text{
+ margin-top:10px;
+ text-align:center;
+ font-weight:900;
+ color:var(--red);
+ letter-spacing:1px;
 }
 
-.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-button{padding:10px 14px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
-.btn-primary{background:linear-gradient(180deg,var(--red),#9e2a24);color:#fff}
-.btn-gold{background:linear-gradient(180deg,var(--gold),#e6c200);color:#3b2a20}
-.btn-muted{background:transparent;border:2px dashed rgba(0,0,0,.06);color:#6b4a39}
+.notice{
+ margin-top:10px;
+ background:linear-gradient(90deg,#fff3c4,#ffe08a);
+ padding:10px;
+ border-radius:12px;
+ text-align:center;
+ font-weight:800;
+}
 
-.result{margin-top:12px;padding:14px;border-radius:12px;background:linear-gradient(180deg,#fffdf6,#fff6ea);min-height:120px}
-.result.good{border-left:6px solid rgba(34,139,34,.18)}
-.result.bad{border-left:6px solid rgba(0,0,0,.08)}
-.vip-badge{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--gold),#fff085);font-weight:900;margin-left:8px;color:#3b2a20}
-.notice{margin-top:10px;padding:12px;border-radius:10px;background:linear-gradient(90deg,#fff6d6,#fff0bf);font-weight:800;color:#3b2a20;text-align:center}
+button{
+ padding:10px 14px;
+ border:none;
+ border-radius:12px;
+ font-weight:800;
+ cursor:pointer;
+}
+.primary{background:var(--red);color:#fff}
 
-.modal{position:fixed;inset:0;background:rgba(12,7,6,.6);display:flex;align-items:center;justify-content:center;z-index:999}
-.modal-box{background:var(--paper);padding:16px;border-radius:12px;width:92%;max-width:420px}
-.row{display:flex;gap:8px;align-items:center;margin-top:8px}
-input[type=text],input[type=date]{padding:8px;border-radius:8px;border:1px solid #d8c9bf;flex:1}
+.modal{
+ position:fixed;inset:0;
+ background:rgba(0,0,0,.65);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ z-index:10;
+}
+.modal-box{
+ background:var(--paper);
+ padding:20px;
+ border-radius:16px;
+ text-align:center;
+ width:90%;
+ max-width:360px;
+}
 
-@media (max-width:520px){
-  :root{--card-w:64px;--card-h:98px}
-  .tube{width:100px;height:140px}
-  .panel{padding:12px}
+.dev{
+ position:fixed;
+ left:8px;
+ bottom:6px;
+ font-size:11px;
+ color:#5c4033;
+ opacity:.7;
 }
 </style>
 </head>
 <body>
 
-<div class="panel-wrap">
-  <div class="panel" role="main" aria-live="polite">
-    <div class="header">
-      <div>
-        <h1 class="title">🔮 XIN QUẺ 10/5 — XÓC 6 LÁ</h1>
-        <div class="subtitle">Một lần/máy — Tỉ lệ trúng móc khóa 10%</div>
-      </div>
-      <div style="color:#5a4038;font-size:.9rem">Tone: <strong style="color:var(--red)">Đỏ đô</strong> · <strong style="color:var(--gold)">Vàng kim</strong></div>
-    </div>
+<div class="panel">
+<h1>🔮 XIN QUẺ 2026</h1>
+<div class="sub">Hội trại lớp 10/5</div>
 
-    <div class="center">
-      <div id="tube" class="tube" aria-hidden="true">
-        <svg width="56" height="56" viewBox="0 0 24 24"><path fill="#f6e0cf" d="M12 2c1.1 0 2 .9 2 2v4h-4V4c0-1.1.9-2 2-2z"/><path fill="#3b2a20" d="M7 7v12c0 2.2 1.8 4 4 4s4-1.8 4-4V7H7z"/></svg>
-      </div>
+<div id="tube" class="tube"></div>
 
-      <div class="energy" aria-hidden="true"><div id="energyFill" class="energy-fill"></div></div>
+<div class="cards" id="cards"></div>
 
-      <div class="cards-area" id="cardsArea" aria-hidden="true"></div>
-
-      <div class="controls" id="controls">
-        <button id="btn-start" class="btn-primary">BẮT ĐẦU</button>
-        <button id="btn-shake" class="btn-gold" disabled>LẮC ỐNG</button>
-        <button id="btn-reset" class="btn-muted">Reset (dev)</button>
-      </div>
-
-      <div id="resultBox" class="result">
-        <div id="status"><strong>Trạng thái:</strong> Chưa rút quẻ</div>
-        <div id="hint" style="margin-top:8px;color:#5a4038">Bấm BẮT ĐẦU → Xác nhận 2 bước → LẮC ỐNG → Chọn 1 trong 6 lá để biết quẻ của bạn.</div>
-      </div>
-    </div>
-
-    <footer style="margin-top:10px;color:#6b4a39;font-size:.9rem">Quà: <strong>Móc khóa</strong> · Tỉ lệ trúng: <strong>10%</strong> · VIP: nhập ngày sinh 2010-06-25</footer>
-  </div>
+<div id="result"></div>
 </div>
 
-<!-- modals -->
-<div id="modal1" class="modal" style="display:none">
-  <div class="modal-box">
-    <h3>Bạn đã sẵn sàng chưa?</h3>
-    <p class="subtitle">Nhấn "Đồng ý" để qua bước tiếp theo (cần tương tác để mở audio).</p>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-      <button id="m1-no" class="btn-muted">Chưa</button>
-      <button id="m1-yes" class="btn-primary">ĐỒNG Ý</button>
-    </div>
-  </div>
+<div class="modal" id="m1">
+ <div class="modal-box">
+  <h3>Bạn đã sẵn sàng chưa?</h3>
+  <button class="primary" onclick="step2()">ĐỒNG Ý</button>
+ </div>
 </div>
 
-<div id="modal2" class="modal" style="display:none">
-  <div class="modal-box">
-    <h3>Tương lai 2026 của bạn là gì?</h3>
-    <p class="subtitle">Viết 1 câu ngắn (ví dụ: "Vô địch bóng chuyền").</p>
-    <div class="row">
-      <input id="futureInput" type="text" placeholder="Ví dụ: Vô địch bóng chuyền 10/5" />
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-      <button id="m2-cancel" class="btn-muted">Hủy</button>
-      <button id="m2-done" class="btn-primary">KHÁM PHÁ</button>
-    </div>
-  </div>
+<div class="modal" id="m2" style="display:none">
+ <div class="modal-box">
+  <h3>Tương lai 2026 của bạn sẽ ra sao?</h3>
+  <button class="primary" onclick="start()">BẮT ĐẦU</button>
+ </div>
 </div>
+
+<div class="dev">dev by Hai Duong</div>
 
 <script>
-/* -----------------------------------------
-  Config & data
-------------------------------------------*/
-const STORAGE_KEY = 'que_10_5_single_draw_v3';
-const VIP_DATE = '2010-06-25';
-const GIFT_PROB = 0.10; // 10%
+const STORE="QUE105_FINAL";
+let ctx;
 
-/* build 100 fortunes: 50 good (20 camp-benefit), 50 bad */
-const goodTemplates = [
-  "Đại cát: May mắn lớn, học hành tiến bộ. Ghé quầy 10/5 mua nước để kích vận.",
-  "Lộc ăn: Có cơ may nhỏ, nhận lời khen. Hãy ủng hộ quầy 10/5.",
-  "Phúc lộc: Phúc dồi dào, gặp người tốt. Mua nước để cảm ơn.",
-  "Tiểu cát: Việc nhỏ thành công, giữ tinh thần lạc quan.",
-  "Thịnh vượng: Vận học hành thuận lợi; đội trại có cơ hội vươn lên."
-];
-const campBenefits = [
-  "Ráng cố gắng, đừng sân si — 10/5 sẽ có cơ hội vô địch bóng chuyền.",
-  "Đoàn kết, tập trung; tinh thần đội giúp 10/5 tiến xa.",
-  "Chăm luyện, giữ hòa khí; phần thưởng dành cho tập thể.",
-  "Giúp nhau, 10/5 sẽ được vinh danh trong trại.",
-  "Tinh thần đồng đội: một hành động nhỏ có thể dẫn tới chiến thắng."
-];
-const badTemplates = [
-  "Hạn thị phi: Cẩn thận lời nói, tránh gây hiểu lầm.",
-  "Tiểu hung: Trở ngại nhỏ, giữ bình tĩnh, chờ cơ hội.",
-  "Cẩn trọng: Một vài rắc rối về đồ đạc hoặc lịch học.",
-  "Sao xấu: Tạm thời hơi khó khăn, giữ sức khỏe.",
-  "Xui nhỏ: Đừng nóng vội, mọi chuyện qua nhanh."
-];
-
-let fortunes = [];
+const good=[],bad=[];
 for(let i=0;i<50;i++){
-  let text = (i<20) ? campBenefits[i % campBenefits.length] : goodTemplates[i % goodTemplates.length];
-  fortunes.push({id:i+1, title:"May mắn", text, category:"good"});
+ good.push("Vận may đang mỉm cười, ghé quầy 10/5 mua nước để giữ lộc nhé!");
+ bad.push("Cẩn thận thị phi, bình tĩnh rồi mọi chuyện sẽ qua.");
 }
-for(let i=0;i<50;i++){
-  let text = badTemplates[i % badTemplates.length];
-  fortunes.push({id:51+i, title:"Xui xẻo", text, category:"bad"});
-}
-// shuffle
-(function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-})(fortunes);
+const team=[
+ "Bỏ qua sân si, 10/5 sẽ vô địch bóng chuyền",
+ "Đoàn kết chính là sức mạnh lớn nhất của 10/5",
+ "Cố gắng âm thầm, chiến thắng sẽ tự đến với 10/5"
+];
 
-/* -----------------------------------------
-  Audio: WebAudio SFX (click, shake-loop, swipe, win, sad)
-------------------------------------------*/
-let audioCtx=null, masterGain=null, shakeInterval=null;
-function ensureAudio(){
-  if(!audioCtx){
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    masterGain = audioCtx.createGain(); masterGain.gain.value = 0.9;
-    masterGain.connect(audioCtx.destination);
-  }
-}
-function sfxClick(){
-  ensureAudio();
-  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-  o.type = 'square'; o.frequency.value = 1200;
-  g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.12, audioCtx.currentTime+0.002);
-  g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.12);
-  o.connect(g); g.connect(masterGain);
-  o.start(); o.stop(audioCtx.currentTime+0.14);
-}
-function sfxStartShake(){
-  ensureAudio();
-  if(shakeInterval) return;
-  shakeInterval = setInterval(()=>{
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type='triangle'; o.frequency.value = 380 + Math.random()*220;
-    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.18);
-    o.connect(g); g.connect(masterGain);
-    o.start(); o.stop(audioCtx.currentTime+0.18);
-  }, 140);
-}
-function sfxStopShake(){
-  if(shakeInterval){ clearInterval(shakeInterval); shakeInterval=null; }
-}
-function sfxSwipe(){
-  ensureAudio();
-  const now = audioCtx.currentTime;
-  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-  o.type='sawtooth';
-  o.frequency.setValueAtTime(900, now);
-  o.frequency.exponentialRampToValueAtTime(160, now+0.35);
-  g.gain.setValueAtTime(0.0001, now);
-  g.gain.exponentialRampToValueAtTime(0.12, now+0.008);
-  g.gain.exponentialRampToValueAtTime(0.0001, now+0.55);
-  o.connect(g); g.connect(masterGain);
-  o.start(); o.stop(now+0.6);
-}
-function sfxWin(){
-  ensureAudio();
-  const notes=[660,880,990];
-  let t=audioCtx.currentTime;
-  notes.forEach(n=>{
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type='triangle'; o.frequency.value=n;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.16, t+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t+0.26);
-    o.connect(g); g.connect(masterGain); o.start(t); o.stop(t+0.28);
-    t += 0.18;
-  });
-}
-function sfxSad(){
-  ensureAudio();
-  const notes=[440,392,349];
-  let t=audioCtx.currentTime;
-  notes.forEach(n=>{
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type='sine'; o.frequency.value=n;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.linearRampToValueAtTime(0.14, t+0.06);
-    g.gain.linearRampToValueAtTime(0.0001, t+0.9);
-    o.connect(g); g.connect(masterGain);
-    o.start(t); o.stop(t+0.95);
-    t += 0.8;
-  });
+function audio(){
+ if(!ctx) ctx=new (AudioContext||webkitAudioContext)();
 }
 
-/* -----------------------------------------
-  DOM & Flow
-------------------------------------------*/
-const btnStart = document.getElementById('btn-start');
-const btnShake = document.getElementById('btn-shake');
-const btnReset = document.getElementById('btn-reset');
-const modal1 = document.getElementById('modal1');
-const modal2 = document.getElementById('modal2');
-const m1no = document.getElementById('m1-no');
-const m1yes = document.getElementById('m1-yes');
-const m2cancel = document.getElementById('m2-cancel');
-const m2done = document.getElementById('m2-done');
-const futureInput = document.getElementById('futureInput');
-const cardsArea = document.getElementById('cardsArea');
-const energyFill = document.getElementById('energyFill');
-const resultBox = document.getElementById('resultBox');
-const status = document.getElementById('status');
-const hint = document.getElementById('hint');
-
-let hasDrawn = false;
-let storedResult = null;
-let isShaking = false;
-
-/* check previous */
-(function loadPrev(){
-  const prev = localStorage.getItem(STORAGE_KEY);
-  if(prev){
-    storedResult = JSON.parse(prev);
-    hasDrawn = true;
-    displayResult(storedResult, true);
-  }
-})();
-
-/* start flow */
-btnStart.addEventListener('click', ()=>{
-  sfxClick();
-  modal1.style.display = 'flex';
-});
-m1no.addEventListener('click', ()=>{ sfxClick(); modal1.style.display='none'; });
-m1yes.addEventListener('click', ()=>{ sfxClick(); modal1.style.display='none'; modal2.style.display='flex'; });
-m2cancel.addEventListener('click', ()=>{ sfxClick(); modal2.style.display='none'; });
-m2done.addEventListener('click', async ()=>{
-  sfxClick();
-  const txt = futureInput.value?.trim() || '';
-  sessionStorage.setItem('future_affirm', txt);
-  try{ ensureAudio(); if(audioCtx.state==='suspended') await audioCtx.resume(); }catch(e){}
-  modal2.style.display='none';
-  if(hasDrawn){
-    hint.innerText = 'Bạn đã rút trước đó — kết quả hiển thị bên dưới.';
-  } else {
-    hint.innerText = 'Nhấn LẮC ỐNG để xóc 6 lá, sau đó chọn 1 lá để nhận quẻ.';
-    btnShake.disabled = false;
-  }
-});
-
-/* shake: show 6 random cards with texture & slight jitter */
-btnShake.addEventListener('click', ()=>{
-  if(hasDrawn) return;
-  sfxClick();
-  // start shake audio & vibrate
-  sfxStartShake();
-  navigator.vibrate?.(80);
-  // visual: add temporary shaking class to tube & cards
-  const tube = document.getElementById('tube');
-  const tubeAnim = tube.animate([{transform:'rotate(0deg)'},{transform:'rotate(12deg)'},{transform:'rotate(-12deg)'},{transform:'rotate(6deg)'},{transform:'rotate(-4deg)'},{transform:'rotate(0deg)'}],{duration:420,iterations:7});
-  // prepare 6 random fortunes indices (but do not reveal yet)
-  const six = pickSixUnique(fortunes.length,6);
-  // build six card elements
-  cardsArea.innerHTML = '';
-  const midIndex = 3; // center reference for layout
-  six.forEach((fIndex,i)=>{
-    const card = document.createElement('div');
-    card.className = 'card shake';
-    // position
-    const offset = (i - (six.length-1)/2);
-    const leftPercent = 50 + offset * 12;
-    card.style.left = leftPercent + '%';
-    card.style.zIndex = 200 - Math.abs(offset);
-    // front design: show small ornament instead of text
-    card.innerHTML = `<div style="text-align:center;line-height:1.05rem"><div style="font-size:.8rem;color:#3b2a20">Quẻ</div><div style="font-size:.65rem;color:#7a523f;margin-top:6px">10/5</div></div>`;
-    // attach data attribute with fortune index
-    card.dataset.index = fIndex;
-    // click to reveal (user chooses one)
-    card.addEventListener('click', onChooseCard);
-    cardsArea.appendChild(card);
-  });
-  // animate subtle pop-in
-  const cardNodes = document.querySelectorAll('.card');
-  cardNodes.forEach((c,idx)=> {
-    c.style.transform = `translateX(-50%) translateY(-6px) rotate(${(idx - 2.5)*8}deg)`;
-    c.style.opacity = '0';
-    setTimeout(()=>{ c.style.transition='opacity .25s, transform .35s'; c.style.opacity='1'; c.style.transform = `translateX(-50%) translateY(-14px) rotate(${(idx - 2.5)*8}deg)`; }, idx*50);
-  });
-  // show energy fill briefly to simulate sprightliness (not required but nice)
-  energyFill.style.width = '60%';
-  // stop shake audio after short time
-  setTimeout(()=>{ sfxStopShake(); tubeAnim.cancel(); }, 1400);
-});
-
-/* when user taps one of the 6 cards */
-function onChooseCard(e){
-  if(hasDrawn) return;
-  const el = e.currentTarget;
-  const idx = parseInt(el.dataset.index,10);
-  // prevent double click
-  disableAllCards();
-  // play swipe sound + vibrate
-  sfxSwipe();
-  navigator.vibrate?.(120);
-  // determine result
-  let result = fortunes[idx];
-  // gift roll 10%
-  const isGift = Math.random() < GIFT_PROB;
-  if(isGift) result = {...result, gift:true};
-  // VIP check: if sessionStorage VIP set (we asked earlier optionally) OR you want to check DOB, but user didn't input DOB in new flow.
-  const vipDob = sessionStorage.getItem('vipDob') || null;
-  if(vipDob === VIP_DATE){
-    result = {id:'VIP', title:'Thiếu gia VIP 10/5', text:'Hào quang rực rỡ! Bạn trúng quẻ VIP. Mang màn hình đến quầy 10/5 để nhận quà VIP.', category:'vip', gift:true};
-  }
-  // save and display with animation
-  const final = {...result, ts: Date.now()};
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(final));
-  hasDrawn = true;
-  // reveal animation: chosen card pops up, others fade
-  revealChosenCard(el, final);
+function sfx(freq=.1,d=150){
+ audio();
+ let o=ctx.createOscillator(),g=ctx.createGain();
+ o.frequency.value=freq;
+ o.connect(g);g.connect(ctx.destination);
+ g.gain.value=.25;
+ o.start();
+ o.stop(ctx.currentTime+d/1000);
 }
 
-/* disable other card clicks */
-function disableAllCards(){
-  const cs = document.querySelectorAll('.card');
-  cs.forEach(c=>{ c.removeEventListener('click', onChooseCard); c.classList.remove('shake'); c.style.cursor='default'; });
+function step2(){
+ sfx(800);
+ m1.style.display="none";
+ m2.style.display="flex";
 }
 
-/* animate reveal */
-function revealChosenCard(chosenEl, result){
-  // fade others
-  const others = Array.from(document.querySelectorAll('.card')).filter(c=>c!==chosenEl);
-  others.forEach((c,i)=>{ c.style.transition='transform .4s, opacity .4s'; c.style.opacity='0'; c.style.transform = 'translateY(40px) scale(.8)'; });
-  // chosen pops
-  chosenEl.style.transition='transform .45s, box-shadow .3s';
-  chosenEl.style.transform = 'translateX(-50%) translateY(-48px) scale(1.18) rotate(0deg)';
-  chosenEl.style.boxShadow = '0 24px 40px rgba(0,0,0,.45)';
-  // after a brief delay, show textual result panel
-  setTimeout(()=> {
-    displayResult(result, false);
-  }, 420);
+function start(){
+ audio();ctx.resume();
+ sfx(600);
+ m2.style.display="none";
+ if(localStorage.getItem(STORE)){
+  showResult(JSON.parse(localStorage.getItem(STORE)));
+  return;
+ }
+ shake();
 }
 
-/* display result UI + sfx + confetti */
-function displayResult(res, fromStorage){
-  // build html
-  const t = document.createElement('div');
-  if(res.category === 'vip' || (res.title && String(res.title).toLowerCase().includes('vip'))){
-    t.innerHTML = `<strong>Kết quả (VIP):</strong> ${escapeHtml(res.title)} <span class="vip-badge">VIP</span><div style="margin-top:8px">${escapeHtml(res.text)}</div>`;
-    resultBox.classList.add('good'); resultBox.classList.remove('bad');
-    try{ sfxWin(); }catch(e){}; confetti({particleCount:180,spread:90,origin:{y:0.35}});
-    navigator.vibrate?.(200);
-  } else {
-    const cls = res.category === 'good' ? 'good' : 'bad';
-    if(cls==='good'){ resultBox.classList.add('good'); resultBox.classList.remove('bad'); try{ sfxWin(); }catch(e){}; confetti({particleCount:120,spread:70,origin:{y:0.35}}); }
-    else { resultBox.classList.add('bad'); resultBox.classList.remove('good'); try{ sfxSad(); }catch(e){}; navigator.vibrate?.([60,40,60]); }
-    t.innerHTML = `<strong>Kết quả:</strong> ${escapeHtml(res.title)}<div style="margin-top:8px;font-weight:700">${escapeHtml(res.text)}</div><div style="margin-top:8px;color:#6b4a39;font-size:.9rem">Quẻ ID: ${escapeHtml(String(res.id))} · ${new Date(res.ts).toLocaleString()}</div>`;
-  }
-  // gift note
-  if(res.gift){
-    const note = document.createElement('div');
-    note.className = 'notice';
-    note.innerHTML = '🎁 CHÚC MỪNG! Bạn trúng <strong>Móc khóa</strong>! HÃY MANG MÀN HÌNH ĐẾN GẶP NHÂN VIÊN QUẦY 10/5 ĐỂ NHẬN QUÀ.';
-    t.appendChild(note);
-  }
-  // replace resultBox content
-  resultBox.innerHTML = '';
-  resultBox.appendChild(t);
-  // lock UI (no more draws)
-  btnShake.disabled = true;
-  // clear cards area but keep chosen card visual for a moment
-  setTimeout(()=>{ cardsArea.innerHTML = ''; }, 1400);
+function shake(){
+ tube.classList.add("shaking");
+ if(navigator.vibrate) navigator.vibrate([200,100,200,100,200]);
+ setTimeout(()=>{
+  tube.classList.remove("shaking");
+  showCards();
+ },1500);
 }
 
-/* helper: pick N distinct indices (0-based) */
-function pickSixUnique(maxLen, n){
-  const set = new Set();
-  while(set.size < n){
-    set.add(Math.floor(Math.random() * maxLen));
-  }
-  return Array.from(set);
+function showCards(){
+ cards.innerHTML="";
+ for(let i=0;i<6;i++){
+  let c=document.createElement("div");
+  c.className="card";
+  c.style.transform=`translateX(-50%) rotate(${(i-2.5)*15}deg)`;
+  c.innerText="QUẺ";
+  c.onclick=()=>pick();
+  cards.appendChild(c);
+ }
 }
 
-/* small sanitize for inserting text */
-function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+function pick(){
+ cards.innerHTML="";
+ let isGood=Math.random()<0.5;
+ let text=isGood?
+  good[Math.floor(Math.random()*good.length)]:
+  bad[Math.floor(Math.random()*bad.length)];
 
-/* reset (dev) */
-btnReset.addEventListener('click', ()=>{
-  localStorage.removeItem(STORAGE_KEY);
-  sessionStorage.removeItem('vipDob');
-  hasDrawn = false; storedResult = null;
-  resultBox.innerHTML = '<div id="status"><strong>Trạng thái:</strong> Chưa rút quẻ</div><div id="hint" style="margin-top:8px;color:#5a4038">Bấm BẮT ĐẦU → Xóc → Chọn 1 trong 6 lá.</div>';
-  cardsArea.innerHTML = '';
-  btnShake.disabled = true;
-  alert('Đã reset (localStorage cleared).');
-});
+ if(Math.random()<0.2)
+  text+=" 🏆 "+team[Math.floor(Math.random()*team.length)];
 
-/* optional VIP prompt on first load (non-blocking) */
-(function askForDOB(){
-  if(!localStorage.getItem(STORAGE_KEY) && !sessionStorage.getItem('vipDobAsked')){
-    sessionStorage.setItem('vipDobAsked','1');
-    setTimeout(()=>{
-      const want = confirm('Muốn nhập ngày sinh để chờ quẻ VIP nếu đúng 2010-06-25? (Bạn có thể bỏ qua)');
-      if(want){
-        const d = prompt('Nhập ngày sinh (YYYY-MM-DD), ví dụ 2010-06-25');
-        if(d) sessionStorage.setItem('vipDob', d.trim());
-      }
-    }, 900);
-  }
-})();
+ let gift=Math.random()<0.1;
+ let data={text,gift,isGood};
+ localStorage.setItem(STORE,JSON.stringify(data));
+ showResult(data);
+}
 
-/* Ensure audio context resumes on first real gesture (some browsers require) */
-document.addEventListener('click', async function resumeAudioOnce(){
-  try{ ensureAudio(); if(audioCtx.state==='suspended') await audioCtx.resume(); }catch(e){}
-  document.removeEventListener('click', resumeAudioOnce);
-});
+function showResult(d){
+ let html=`<div class="big-card">
+  <div>${d.text}</div>
+  <div class="start-text">✨ BẮT ĐẦU ĐI ✨</div>
+ </div>`;
+ if(d.gift){
+  html+=`<div class="notice">🎁 Mang màn hình đến quầy 10/5 để nhận MÓC KHÓA!</div>`;
+  confetti({particleCount:120,spread:80});
+ }
+ result.innerHTML=html;
+}
 </script>
-
 </body>
-</html
+</html>
