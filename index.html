@@ -3,240 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xin Quẻ Định Mệnh 10/5</title>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<title>🔮 Xin Quẻ Định Mệnh 10/5</title>
 
 <style>
-:root{
-  --red:#c0392b;
-  --gold:#ffd700;
-  --paper:#fff5e6;
-}
-
 body{
   margin:0;
-  min-height:100vh;
+  font-family:system-ui;
+  background:#2c0b0b;
+  color:#3b1d00;
   display:flex;
-  align-items:center;
   justify-content:center;
-  background:radial-gradient(circle,#2c0a0a,#000);
-  font-family:"Times New Roman",serif;
+  align-items:center;
+  min-height:100vh;
 }
 
 .panel{
+  background:#fff5e6;
   width:92%;
   max-width:420px;
-  background:var(--paper);
-  border:10px double #7b4a12;
-  border-radius:18px;
   padding:20px;
+  border-radius:18px;
+  border:6px double #8b5a2b;
+  box-shadow:0 0 30px rgba(0,0,0,.6);
   text-align:center;
-  box-shadow:0 0 25px rgba(255,215,0,.4);
-}
-
-button{
-  background:linear-gradient(145deg,var(--gold),#e6b800);
-  border:none;
-  padding:12px 22px;
-  border-radius:12px;
-  font-size:16px;
-  cursor:pointer;
 }
 
 .hidden{display:none}
 
-/* XÓC */
-@keyframes shake{
-  0%{transform:translate(0) rotate(0)}
-  25%{transform:translate(2px,-2px) rotate(-2deg)}
-  50%{transform:translate(-2px,2px) rotate(2deg)}
-  75%{transform:translate(2px,2px) rotate(-1deg)}
-  100%{transform:translate(0) rotate(0)}
-}
-.shake{animation:shake .15s infinite}
-
-/* CARD GRID */
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:20px;
-  perspective:1000px;
-}
-
-/* 3D CARD */
-.card{
-  height:90px;
-  position:relative;
-  transform-style:preserve-3d;
-  transition:.6s;
+button{
+  background:#c0392b;
+  color:#ffd700;
+  border:none;
+  padding:12px 20px;
+  font-size:16px;
+  border-radius:12px;
+  margin-top:14px;
   cursor:pointer;
 }
 
-.card-inner{
-  position:absolute;
-  inset:0;
-  border-radius:12px;
-  border:3px solid var(--gold);
-  background:linear-gradient(#fff,#f3e6c8);
+button:active{transform:scale(.95)}
+
+.que-area{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+
+.que{
+  width:36px;
+  height:140px;
+  background:linear-gradient(#f5deb3,#e6c79c);
+  border-radius:18px 18px 8px 8px;
+  border:2px solid #8b5a2b;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:bold;
-  backface-visibility:hidden;
+  font-size:24px;
+  cursor:pointer;
+  animation:shake 1s infinite;
 }
 
-.card-back{
-  transform:rotateY(180deg);
-  font-size:14px;
-}
-
-.card.flip{transform:rotateY(180deg) scale(1.15); z-index:10}
-
-/* RESULT */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
+@keyframes shake{
+  0%{transform:rotate(0deg)}
+  25%{transform:rotate(2deg)}
+  50%{transform:rotate(0deg)}
+  75%{transform:rotate(-2deg)}
+  100%{transform:rotate(0deg)}
 }
 
 .result{
-  background:var(--paper);
-  border:8px double var(--gold);
-  border-radius:20px;
-  padding:25px;
-  width:90%;
-  max-width:380px;
-  animation:zoom .4s ease;
+  margin-top:20px;
+  animation:zoom .5s ease;
 }
 
 @keyframes zoom{
-  from{transform:scale(.3)}
-  to{transform:scale(1)}
+  from{transform:scale(.5);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
-.reward{
-  margin-top:15px;
-  font-weight:bold;
-  color:var(--red);
+.big-que{
+  margin:auto;
+  width:80px;
+  height:260px;
+  background:linear-gradient(#f5deb3,#e6c79c);
+  border-radius:30px;
+  border:3px solid #8b5a2b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
 }
 
 .dev{
   position:fixed;
   bottom:6px;
   left:8px;
-  font-size:11px;
-  color:#fff;
-  opacity:.6;
+  font-size:12px;
+  color:#ffd700;
+  opacity:.7;
 }
 </style>
 </head>
 
 <body>
 
-<div class="panel" id="step1">
-  <h2>🔮 Bạn đã sẵn sàng?</h2>
-  <button onclick="next(2)">Sẵn sàng</button>
+<div class="panel">
+
+<!-- STEP 1 -->
+<div id="step1">
+  <h2>🔮 Bạn đã sẵn sàng chưa?</h2>
+  <button onclick="nextStep(1)">Sẵn sàng</button>
 </div>
 
-<div class="panel hidden" id="step2">
-  <h2>🌌 Tương lai 2026 đang chờ bạn</h2>
-  <button onclick="next(3)">Bắt đầu</button>
+<!-- STEP 2 -->
+<div id="step2" class="hidden">
+  <h2>✨ Bạn có tin định mệnh không?</h2>
+  <button onclick="nextStep(2)">Tôi tin</button>
 </div>
 
-<div class="panel hidden" id="step3">
+<!-- STEP 3 -->
+<div id="step3" class="hidden">
   <h2>🪵 Xóc quẻ</h2>
-  <button id="shakeBtn">Xóc</button>
-  <div class="cards hidden" id="cards"></div>
+  <button onclick="shake()">Xóc quẻ</button>
+</div>
+
+<!-- STEP 4 -->
+<div id="step4" class="hidden">
+  <h3>Chọn 1 que quẻ</h3>
+  <div class="que-area" id="ques"></div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="hidden"></div>
+
 </div>
 
 <div class="dev">dev by Hai Duong</div>
 
-<audio id="shakeSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wood-hard-hit-2182.mp3" loop></audio>
-<audio id="good" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
-<audio id="bad" src="https://assets.mixkit.co/sfx/preview/mixkit-sad-game-over-trombone-471.mp3"></audio>
-
 <script>
-const fortunes=[];
-for(let i=1;i<=50;i++){
-  fortunes.push({text:`Quẻ MAY ${i}: Mua nước quầy 10/5 để kích vận 🍀`,good:true});
-}
-for(let i=1;i<=50;i++){
-  fortunes.push({text:`Quẻ XUI ${i}: Đoàn kết 10/5 rồi sẽ vô địch bóng chuyền 💪`,good:false});
-}
+/* AUDIO */
+const clickS = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_9c8c9a.ogg");
+const shakeS = new Audio("https://cdn.pixabay.com/audio/2022/10/03/audio_3b6b7b.ogg");
+shakeS.loop=true;
+const drawS = new Audio("https://cdn.pixabay.com/audio/2022/03/10/audio_7c1c0e.ogg");
+const winS = new Audio("https://cdn.pixabay.com/audio/2022/10/16/audio_3c8c3b.ogg");
+const sadS = new Audio("https://cdn.pixabay.com/audio/2022/08/04/audio_2f6d8d.ogg");
 
-let rewardType="";
-const now=Date.now();
-const lastPunish=localStorage.getItem("lastPunish")||0;
-
-const r=Math.random()*100;
-if(r<1){
-  rewardType="DANCER 15 PHÚT 😏";
-}else if(r<11 && now-lastPunish>900000){
-  rewardType="BÁN PHỤ 15 PHÚT 🧹";
-  localStorage.setItem("lastPunish",now);
-}else if(r<36){
-  rewardType="🎁 MÓC KHOÁ – RA QUẦY 10/5 NHẬN";
-}else{
-  rewardType="KHÔNG QUÀ";
+let resultSaved = localStorage.getItem("que105");
+if(resultSaved){
+  showResult(JSON.parse(resultSaved), true);
 }
 
-function next(n){
-  document.querySelectorAll(".panel").forEach(p=>p.classList.add("hidden"));
-  document.getElementById("step"+n).classList.remove("hidden");
+/* STEP */
+function nextStep(n){
+  clickS.play();
+  document.getElementById("step"+n).classList.add("hidden");
+  document.getElementById("step"+(n+1)).classList.remove("hidden");
 }
 
-shakeBtn.onclick=()=>{
-  if(localStorage.getItem("fortune")) return show(JSON.parse(localStorage.getItem("fortune")));
-  shakeBtn.classList.add("shake");
-  shakeSound.play();
-  navigator.vibrate&&navigator.vibrate([200,100,200]);
+/* SHAKE */
+function shake(){
+  clickS.play();
+  shakeS.play();
+  if(navigator.vibrate) navigator.vibrate([200,100,200,100,200]);
+
   setTimeout(()=>{
-    shakeBtn.classList.remove("shake");
-    shakeSound.pause();
-    showCards();
+    shakeS.pause();
+    document.getElementById("step3").classList.add("hidden");
+    document.getElementById("step4").classList.remove("hidden");
+    spawnQues();
   },2000);
-};
+}
 
-function showCards(){
-  cards.innerHTML="";
-  cards.classList.remove("hidden");
+/* CREATE 6 QUE */
+function spawnQues(){
+  const box=document.getElementById("ques");
+  box.innerHTML="";
   for(let i=0;i<6;i++){
-    const c=document.createElement("div");
-    c.className="card";
-    c.innerHTML=`<div class="card-inner">QUẺ</div>
-                 <div class="card-inner card-back">MỞ</div>`;
-    c.onclick=()=>pick(c);
-    cards.appendChild(c);
+    const q=document.createElement("div");
+    q.className="que";
+    q.textContent="🪵";
+    q.onclick=()=>pickQue();
+    box.appendChild(q);
   }
 }
 
-function pick(card){
-  const f=fortunes[Math.floor(Math.random()*fortunes.length)];
-  localStorage.setItem("fortune",JSON.stringify(f));
-  card.classList.add("flip");
-  setTimeout(()=>show(f),600);
+/* PICK */
+function pickQue(){
+  if(localStorage.getItem("que105")) return;
+  drawS.play();
+  if(navigator.vibrate) navigator.vibrate(300);
+
+  const isGood=Math.random()<0.5;
+  const text=isGood
+   ?"🌟 Đại cát: Vận may đang tới – ghé quầy 10/5 mua nước kích lộc!"
+   :"🌧️ Tiểu hạn: Tránh sân si – giữ tâm sáng sẽ qua";
+
+  const data={good:isGood,text};
+  localStorage.setItem("que105",JSON.stringify(data));
+  showResult(data,false);
 }
 
-function show(f){
-  f.good?good.play():bad.play();
-  if(f.good) confetti({particleCount:120,spread:70});
-  const o=document.createElement("div");
-  o.className="overlay";
-  o.innerHTML=`
-  <div class="result">
-    <h2>${f.good?"🌟 QUẺ MAY":"⚠️ QUẺ XUI"}</h2>
-    <p>${f.text}</p>
-    <div class="reward">${rewardType}</div>
-  </div>`;
-  document.body.appendChild(o);
+/* SHOW RESULT */
+function showResult(data,fromLoad){
+  document.querySelectorAll(".panel>div").forEach(d=>d.classList.add("hidden"));
+  const r=document.getElementById("result");
+  r.classList.remove("hidden");
+
+  r.innerHTML=`
+    <div class="big-que">🪵</div>
+    <p>${data.text}</p>
+    ${data.good?'<b>🎁 Có thể có quà – hãy hỏi quầy 10/5!</b>':""}
+  `;
+
+  if(!fromLoad){
+    data.good?winS.play():sadS.play();
+  }
 }
 </script>
 
 </body>
-</html>
+</html
