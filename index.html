@@ -167,37 +167,161 @@
         }
         
         localStorage.setItem('105_eternal_lock', JSON.stringify(res));
-        showFinalUI(res);
+        showFinalUI(<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>10/5 - LINH QUẺ ĐỊNH MỆNH</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --gold: #ffd700; --red: #c0392b; --paper: #fff5e6; --wood: #5d4037; }
+        body { margin: 0; background: #000; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; color: white; }
+        .wood-panel { background: var(--paper); color: #333; padding: 30px; border-radius: 25px; border: 8px double var(--wood); box-shadow: 0 0 50px rgba(0,0,0,0.8); text-align: center; width: 90%; max-width: 350px; }
+        h1 { color: var(--red); font-size: 24px; text-transform: uppercase; font-weight: 900; margin-bottom: 20px; }
+        input[type="date"] { width: 90%; padding: 15px; border-radius: 12px; border: 3px solid var(--wood); font-size: 20px; font-weight: bold; margin-bottom: 20px; text-align: center; }
+        .btn-action { background: linear-gradient(#e74c3c, #c0392b); color: white; border: none; padding: 18px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; box-shadow: 0 5px 0 #7b241c; text-transform: uppercase; }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 1px 0 #7b241c; }
+        #ong-que-container { display: none; margin: 20px auto; font-size: 100px; }
+        .shaking { animation: shake 0.1s infinite; }
+        @keyframes shake { 0% { transform: rotate(5deg); } 50% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+        .que-fan { display: none; position: relative; height: 260px; width: 100%; margin-top: 20px; }
+        .que-stick { width: 45px; height: 180px; background: linear-gradient(#f3d5b5, #e7bc91); border-radius: 10px 10px 2px 2px; border: 1px solid #bc8a5f; position: absolute; left: 50%; bottom: 10px; margin-left: -22.5px; transform-origin: bottom center; transition: 0.3s; cursor: pointer; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; font-size: 13px; font-weight: bold; color: var(--wood); box-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
+        .modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; padding: 20px; }
+        .result-card { background: var(--paper); color: #222; padding: 30px; border-radius: 20px; border: 10px double var(--wood); text-align: center; width: 100%; max-width: 320px; }
+        .gift-box { background: #fff3e0; border: 3px dashed #e74c3c; color: #e74c3c; padding: 10px; border-radius: 10px; margin: 15px 0; font-weight: 900; animation: pulse 1s infinite; }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-screen">
+        <div class="wood-panel">
+            <h1>LINH QUẺ 10/5</h1>
+            <p>Vui lòng chạm để kích hoạt âm thanh</p>
+            <button class="btn-action" onclick="startApp()">KÍCH HOẠT THIÊN CƠ</button>
+        </div>
+    </div>
+
+    <div id="main-app" style="display: none;">
+        <div class="wood-panel" id="input-ui">
+            <h1>NHẬP NGÀY SINH</h1>
+            <input type="date" id="dob">
+            <button class="btn-action" onclick="handleShake()">LẮC ỐNG XIN QUẺ</button>
+        </div>
+        <div id="ong-que-container">🏺</div>
+        <div class="que-fan" id="que-fan"></div>
+    </div>
+
+    <div class="modal" id="modal-result">
+        <div class="result-card">
+            <div id="res-icon" style="font-size: 60px;">🏆</div>
+            <div id="res-title" style="font-size: 24px; font-weight: 900; color: #c0392b;"></div>
+            <p id="res-desc" style="font-size: 17px; margin: 20px 0; font-weight: 600;"></p>
+            <div id="gift-area" style="display:none;"><div class="gift-box">🎁 QUÀ ĐẶC BIỆT: 01 MÓC KHÓA!</div></div>
+            <p style="font-size: 11px; color: #999; border-top: 1px solid #ddd; padding-top: 10px;">CHỈ ĐƯỢC RÚT 1 LẦN DUY NHẤT</p>
+        </div>
+    </div>
+
+<script>
+    // Link âm thanh siêu sạch, không bao giờ die
+    const audioFiles = {
+        shake: 'https://actions.google.com/sounds/v1/tools_and_equipment/wood_rattle.ogg',
+        draw: 'https://actions.google.com/sounds/v1/foley/paper_shuffle.ogg',
+        win: 'https://actions.google.com/sounds/v1/cartoon/clown_horn_accent.ogg',
+        sad: 'https://www.myinstants.com/media/sounds/sad-violin-meme.mp3'
+    };
+
+    const sfx = {};
+    for (let key in audioFiles) {
+        sfx[key] = new Audio(audioFiles[key]);
+        sfx[key].load();
     }
 
-    function showFinalUI(res) {
+    const fortunes = [
+        {t:"Đại Cát", d:"Năm 2026 vạn sự như ý, học hành đỉnh cao!", type:"good", gift:false},
+        {t:"Lộc Ăn", d:"Sắp tới có lộc ăn uống ngập họng. Mau rủ bạn lớp 10/5 đi ăn nhé!", type:"good", gift:true},
+        {t:"Hạn Thị Phi", d:"Dễ bị nói xấu sau lưng. Mua ngay 1 ly nước 10/5 để giải xui!", type:"bad", gift:false},
+        {t:"May Mắn", d:"Quý nhân phù trợ, làm gì cũng thành công rực rỡ!", type:"good", gift:true},
+        {t:"Hạn Suy Nghĩ", d:"Đừng overthinking nữa ní ơi. Uống nước 10/5 cho tỉnh táo đi!", type:"bad", gift:false}
+    ];
+    while(fortunes.length < 70) fortunes.push({t:"Bình Hòa", d:"Mọi sự ổn định. Mua nước ủng hộ 10/5 lộc sẽ tự đến!", type:"good", gift:false});
+
+    function startApp() {
+        // Mồi âm thanh cho trình duyệt
+        for (let key in sfx) {
+            sfx[key].play().then(() => { sfx[key].pause(); sfx[key].currentTime = 0; });
+        }
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+    }
+
+    function handleShake() {
+        if(!document.getElementById('dob').value) return alert("Nhập ngày sinh mới linh!");
+        sfx.shake.loop = true; sfx.shake.play();
+        document.getElementById('input-ui').style.display='none';
+        const ong = document.getElementById('ong-que-container');
+        ong.style.display='block'; ong.classList.add('shaking');
+        
+        setTimeout(() => {
+            sfx.shake.pause();
+            ong.style.display='none';
+            showFan();
+        }, 2000);
+    }
+
+    function showFan() {
+        const fan = document.getElementById('que-fan');
+        fan.innerHTML = ''; fan.style.display = 'block';
+        for(let i=0; i<6; i++) {
+            const q = document.createElement('div');
+            q.className = 'que-stick'; q.innerHTML = "QUẺ 10/5";
+            q.style.transform = `rotate(${(i-2.5)*18}deg) translateX(${(i-2.5)*10}px)`;
+            q.onclick = function() {
+                sfx.draw.play();
+                this.style.transform = "translateY(-100px) scale(1.1)";
+                setTimeout(calcResult, 800);
+            };
+            fan.appendChild(q);
+        }
+    }
+
+    function calcResult() {
+        const dob = document.getElementById('dob').value;
+        let res;
+        if(dob === "2010-06-25") {
+            res = {t:"💎 THIẾU GIA VIP 10/5", d:"Hào quang rực rỡ nhất khối, 2026 tiền tài viên mãn!", type:"good", gift:true};
+        } else {
+            const d = new Date(dob);
+            res = fortunes[(d.getDate() + d.getMonth()) % fortunes.length];
+        }
+        localStorage.setItem('105_final_fix', JSON.stringify(res));
+        renderResult(res);
+    }
+
+    function renderResult(res) {
         document.getElementById('main-app').style.display='none';
         document.getElementById('res-title').innerText = res.t;
-        document.getElementById('res-desc').innerText = res.desc || res.d;
+        document.getElementById('res-desc').innerText = res.d;
         document.getElementById('gift-area').style.display = res.gift ? 'block' : 'none';
+        document.getElementById('modal-result').style.display='flex';
         
-        const modal = document.getElementById('modal-result');
-        modal.style.display='flex';
-        setTimeout(() => document.getElementById('card-inner').classList.add('show'), 100);
-
         if(res.type === "good") {
             sfx.win.play();
-            confetti({ particleCount: 250, spread: 90, origin: { y: 0.6 } });
-            if(navigator.vibrate) navigator.vibrate([200,100,200,100,500]);
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
             sfx.sad.play();
             document.getElementById('res-icon').innerText = "⚠️";
-            if(navigator.vibrate) navigator.vibrate(300);
         }
     }
 
     window.onload = () => {
-        const saved = localStorage.getItem('105_eternal_lock');
+        const saved = localStorage.getItem('105_final_fix');
         if(saved) {
             document.getElementById('welcome-screen').style.display='none';
-            showFinalUI(JSON.parse(saved));
+            renderResult(JSON.parse(saved));
         }
     };
 </script>
 </body>
 </html>
+
